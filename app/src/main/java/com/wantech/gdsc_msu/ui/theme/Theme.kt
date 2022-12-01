@@ -15,8 +15,8 @@ private val DarkColorPalette = darkColors(
     primary = PrimaryDark,
     primaryVariant = TertiaryDark,
     secondary = SecondaryDark,
-    surface = SurfaceDark,
-    background = SurfaceDark,
+    surface = SurfaceDark ,
+    background = SurfaceVariantDark,
 
 )
 
@@ -24,7 +24,7 @@ private val LightColorPalette = lightColors(
     primary = PrimaryLight,
     primaryVariant = TertiaryLight,
     secondary = SecondaryLight,
-    background = SurfaceLight,
+    background =SurfaceVariantLight ,
     surface = SurfaceLight
 
     /* Other default colors to override

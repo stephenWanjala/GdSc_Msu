@@ -99,7 +99,7 @@ fun LoginTextInputFields(
             ) {
                 Text(
                     text = "Login",
-                    style = MaterialTheme.typography.h1,
+                    style = MaterialTheme.typography.h5,
                     textAlign = TextAlign.Center
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -200,7 +200,7 @@ fun LoginTextInputFields(
             ) {
                 Text(
                     text = "Login",
-                    style = MaterialTheme.typography.h1,
+                    style = MaterialTheme.typography.h5,
                     textAlign = TextAlign.Center
                 )
                 Spacer(modifier = Modifier.height(8.dp))
