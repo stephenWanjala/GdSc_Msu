@@ -1,4 +1,4 @@
-package com.wantech.gdsc_msu.feature_auth.login.presentation.componets
+package com.wantech.gdsc_msu.feature_auth.sign_up.presentation.componets
 
 import android.content.res.Configuration
 import android.util.Patterns
@@ -21,13 +21,17 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.AButton
+import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.InputTextField
+import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.LogoSection
+import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.PasswordTextField
 import com.wantech.gdsc_msu.ui.theme.SurfaceVariantDark
 import com.wantech.gdsc_msu.ui.theme.SurfaceVariantLight
 import com.wantech.gdsc_msu.util.Screen
 
 
 @Composable
-fun LoginSection(navController: NavHostController) {
+fun SignUpSection(navController: NavHostController) {
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
@@ -39,37 +43,30 @@ fun LoginSection(navController: NavHostController) {
             LogoSection()
             Card(
                 modifier = Modifier
-//                    .fillMaxWidth()
                     .padding(horizontal = 12.dp, vertical = 32.dp)
-                    .background(color = if (isSystemInDarkTheme()) SurfaceVariantDark else SurfaceVariantLight,
-                    shape = RoundedCornerShape(12.dp)),
-                    contentColor = MaterialTheme.colors.onBackground,
-                backgroundColor = if (isSystemInDarkTheme()) SurfaceVariantDark else SurfaceVariantLight,
+                    .background(
+                        color = if (isSystemInDarkTheme()) SurfaceVariantDark else SurfaceVariantLight,
+                        shape = RoundedCornerShape(12.dp)
+                    ),
+                contentColor = MaterialTheme.colors.onBackground,
+                backgroundColor =
+                if (isSystemInDarkTheme()) SurfaceVariantDark else SurfaceVariantLight,
                 shape = RoundedCornerShape(12.dp),
-            elevation = 0.dp
-
+                elevation = 0.dp
             ) {
-                LoginTextInputFields(
-                    onClickLoginButton = {
-////                        navController.clearBackStack()
-//                        navigator.navigate(HomeScreenDestination){
-//                            popUpTo(LoginScreenDestination){
-//                                inclusive =true
-//                            }
-//                        }
-
-                    },
-                    onClickToSignUp = {
-                        navController.clearBackStack(Screen.LoginAccountScreen.route)
-                        navController.navigate(Screen.SignUpAccount.route){
-                            popUpTo(Screen.SignUpAccount.route){
-                                inclusive =true
-                            }
+                LoginTextInputFields(onClickLoginButton = {
+                    navController.clearBackStack(Screen.SignUpAccount.route)
+                    navController.navigate(Screen.LoginAccountScreen.route) {
+                        popUpTo(Screen.LoginAccountScreen.route){
+                            inclusive =true
                         }
                     }
-                ) {
 
-                }
+                },
+                    onClickToSignUp = {
+
+                    }
+                )
             }
 
 
@@ -80,10 +77,13 @@ fun LoginSection(navController: NavHostController) {
 
 @Composable
 fun LoginTextInputFields(
-    onClickLoginButton: () -> Unit, onClickToSignUp: () -> Unit, onForgetPassword: () -> Unit
+    onClickLoginButton: () -> Unit, onClickToSignUp: () -> Unit,
 ) {
 
     var emailFieldState by remember {
+        mutableStateOf("")
+    }
+    var userNameFieldState by remember {
         mutableStateOf("")
     }
     var passwordState by remember {
@@ -101,26 +101,32 @@ fun LoginTextInputFields(
     when (orientation) {
         Configuration.ORIENTATION_LANDSCAPE -> {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth(),
-//                    .padding(vertical = 8.dp),
+                modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Login",
+                    text = "Create Account",
                     style = MaterialTheme.typography.h4,
                     textAlign = TextAlign.Center
                 )
                 Spacer(modifier = Modifier.height(8.dp))
 
+
                 Row(
                     modifier = Modifier
-                        .padding(16.dp)
+                        .padding(start = 16.dp, end = 16.dp, bottom = 4.dp)
                         .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
+                    InputTextField(
+                        textValue = userNameFieldState,
+                        labelText = "UserName",
+                        onValueChange = { userNameFieldState = it },
+                        modifier = Modifier.fillMaxWidth(0.5f)
+                    )
+
                     InputTextField(
                         textValue = emailFieldState,
                         labelText = "Email",
@@ -132,45 +138,27 @@ fun LoginTextInputFields(
                         )
 
                     )
-
-
-                    PasswordTextField(
-                        modifier = Modifier.weight(0.5f),
-                        textValue = passwordState,
-                        labelText = "Password",
-
-                        placeHolder = "Your Password",
-                        onValueChange = {
-                            passwordState = it
-
-                        },
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Password, imeAction = ImeAction.Done
-                        )
-
-                    )
-
                 }
+                PasswordTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    textValue = passwordState,
+                    labelText = "Password",
 
-                Spacer(modifier = Modifier.width(8.dp))
-                TextButton(
-                    onClick = onForgetPassword,
-                    modifier = Modifier
-                        .fillMaxWidth(0.5f)
-                        .padding(end = 64.dp)
-                        .align(Alignment.End),
-                    contentPadding = PaddingValues(1.dp),
-                ) {
-                    Text(
-                        text = "Forgot password?",
-                        color = MaterialTheme.colors.surface,
-                        style = MaterialTheme.typography.caption,
-                        textAlign = TextAlign.Center
-                    )
-                }
+                    placeHolder = "Your Password",
+                    onValueChange = {
+                        passwordState = it
 
-                AButton(text = "Login",
-                    onClick = onClickLoginButton,
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Password, imeAction = ImeAction.Done
+                    ),
+                    passwordModifier = Modifier.fillMaxWidth(0.9f)
+
+                )
+
+
+                AButton(text = "Sign Up",
+                    onClick = onClickToSignUp,
                     modifier = Modifier.fillMaxWidth(0.7f),
                     buttonEnabled = {
                         passwordState.isNotBlank() && ((passwordState.length >= 8) && emailFieldState.isNotBlank() && Patterns.EMAIL_ADDRESS.matcher(
@@ -181,20 +169,19 @@ fun LoginTextInputFields(
                 )
 
                 TextButton(
-                    onClick = onClickToSignUp,
+                    onClick = onClickLoginButton,
                     modifier = Modifier.fillMaxWidth(),
                     contentPadding = PaddingValues(2.dp)
                 ) {
                     Text(
-                        text = "Don't Have Account?",
+                        text = "Already Have an Account?",
                         color = MaterialTheme.colors.surface,
-
-                        )
+                    )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = "Sign Up",
+                        text = "Sign In",
                         color = MaterialTheme.colors.surface,
-                        modifier = Modifier.padding(4.dp)
+                        modifier = Modifier.padding(4.dp),
                     )
                 }
 
@@ -209,11 +196,17 @@ fun LoginTextInputFields(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Login",
-                    style = MaterialTheme.typography.h5,
+                    text = "Create Account",
+                    style = MaterialTheme.typography.h4,
                     textAlign = TextAlign.Center
                 )
                 Spacer(modifier = Modifier.height(8.dp))
+
+                InputTextField(
+                    textValue = userNameFieldState,
+                    labelText = "UserName",
+                    onValueChange = { userNameFieldState = it },
+                )
 
                 InputTextField(
                     textValue = emailFieldState,
@@ -239,27 +232,10 @@ fun LoginTextInputFields(
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Password, imeAction = ImeAction.Done
                     ),
+                )
 
-                    )
-                Spacer(modifier = Modifier.width(8.dp))
-                TextButton(
-                    onClick = onForgetPassword,
-                    modifier = Modifier
-                        .wrapContentHeight()
-                        .padding(end = 32.dp)
-                        .align(Alignment.End),
-                    contentPadding = PaddingValues(1.dp),
-                ) {
-                    Text(
-                        text = "Forgot password?",
-                        color = MaterialTheme.colors.surface,
-                        style = MaterialTheme.typography.caption,
-                        textAlign = TextAlign.Center
-                    )
-                }
-
-                AButton(text = "Login",
-                    onClick = onClickLoginButton,
+                AButton(text = "Sign Up",
+                    onClick = onClickToSignUp,
                     modifier = Modifier.wrapContentSize(),
                     buttonEnabled = {
                         passwordState.isNotBlank() && ((passwordState.length >= 8) && emailFieldState.isNotBlank() && Patterns.EMAIL_ADDRESS.matcher(
@@ -270,18 +246,18 @@ fun LoginTextInputFields(
                 )
 
                 TextButton(
-                    onClick = onClickToSignUp,
+                    onClick = onClickLoginButton,
                     modifier = Modifier.fillMaxWidth(),
                     contentPadding = PaddingValues(2.dp)
                 ) {
                     Text(
-                        text = "Don't Have Account?",
+                        text = "Already Have Account?",
                         color = MaterialTheme.colors.surface,
 
                         )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = "Sign Up",
+                        text = "Sign In",
                         color = MaterialTheme.colors.surface,
                         modifier = Modifier.padding(4.dp)
                     )
