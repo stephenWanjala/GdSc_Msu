@@ -51,7 +51,7 @@ fun GdSc_MsuTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composab
     if (!view.isInEditMode) {
         SideEffect {
             (view.context as Activity).window.statusBarColor =
-                colors.background.toArgb()
+                colors.surface.toArgb()
             ViewCompat.getWindowInsetsController(view)?.isAppearanceLightStatusBars = darkTheme
         }
     }
