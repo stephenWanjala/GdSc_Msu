@@ -2,6 +2,8 @@ package com.wantech.gdsc_msu.feature_auth.login.presentation.componets
 
 import android.content.res.Configuration
 import android.util.Patterns
+import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,8 +20,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.wantech.gdsc_msu.ui.theme.SurfaceVariantDark
+import com.wantech.gdsc_msu.ui.theme.SurfaceVariantLight
 
 
 @Composable
@@ -36,11 +39,15 @@ fun LoginSection(navController: NavHostController) {
             Card(
                 modifier = Modifier
 //                    .fillMaxWidth()
-                    .padding(horizontal = 12.dp, vertical = 32.dp),
-//                    .align(Alignment.CenterHorizontally),
+                    .padding(horizontal = 12.dp, vertical = 32.dp)
+                    .background(color = if (isSystemInDarkTheme()) SurfaceVariantDark else SurfaceVariantLight,
+                    shape = RoundedCornerShape(12.dp)),
+                    contentColor = MaterialTheme.colors.onBackground,
+                backgroundColor = if (isSystemInDarkTheme()) SurfaceVariantDark else SurfaceVariantLight,
                 shape = RoundedCornerShape(12.dp),
+            elevation = 0.dp
 
-                ) {
+            ) {
                 LoginTextInputFields(
                     onClickLoginButton = {
 ////                        navController.clearBackStack()
@@ -92,14 +99,15 @@ fun LoginTextInputFields(
     when (orientation) {
         Configuration.ORIENTATION_LANDSCAPE -> {
             Column(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth(),
 //                    .padding(vertical = 8.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     text = "Login",
-                    style = MaterialTheme.typography.h5,
+                    style = MaterialTheme.typography.h4,
                     textAlign = TextAlign.Center
                 )
                 Spacer(modifier = Modifier.height(8.dp))

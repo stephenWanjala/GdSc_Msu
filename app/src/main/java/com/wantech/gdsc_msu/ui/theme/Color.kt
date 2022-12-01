@@ -2,8 +2,8 @@ package com.wantech.gdsc_msu.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val PrimaryDark = Color(0x5EFF5722)
-//val PrimaryDark = Color(0xDBFF5722)
+//val PrimaryDark = Color(0x5EFF5722)
+val PrimaryDark = Color(0xDBFF5722)
 val SecondaryDark = Color(0xFFE2E0E7)
 val TertiaryDark = Color(0xFFEFB8C8)
 val SurfaceDark = Color(0xFF956170)

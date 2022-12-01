@@ -22,9 +22,10 @@ fun AButton(
         modifier = modifier
             .padding(start = 32.dp, end = 32.dp)
             .fillMaxWidth()
-            .clip(RoundedCornerShape(10.dp)),
-        elevation = ButtonDefaults.elevation(defaultElevation = 0.dp),
-        enabled = buttonEnabled()
+            .clip(RoundedCornerShape(12.dp)),
+        elevation = ButtonDefaults.elevation(defaultElevation = 2.dp, disabledElevation = 0.dp, pressedElevation = 4.dp),
+        enabled = buttonEnabled(),
+        shape = RoundedCornerShape(12.dp)
     ) {
         Text(
             text = text, style = MaterialTheme.typography.body2

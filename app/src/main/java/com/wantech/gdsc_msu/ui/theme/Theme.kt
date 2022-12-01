@@ -7,6 +7,7 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.ViewCompat
@@ -16,7 +17,7 @@ private val DarkColorPalette = darkColors(
     primaryVariant = TertiaryDark,
     secondary = SecondaryDark,
     surface = SurfaceDark ,
-    background = SurfaceVariantDark,
+    background = SurfaceDark,
 
 )
 
@@ -24,8 +25,10 @@ private val LightColorPalette = lightColors(
     primary = PrimaryLight,
     primaryVariant = TertiaryLight,
     secondary = SecondaryLight,
-    background =SurfaceVariantLight ,
-    surface = SurfaceLight
+    background = SurfaceLight ,
+    surface = SurfaceLight,
+    onBackground = Color(0xFF1C1B1F),
+    onSurface = Color(0xFF1C1B1F),
 
     /* Other default colors to override
     background = Color.White,
@@ -48,7 +51,7 @@ fun GdSc_MsuTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composab
     if (!view.isInEditMode) {
         SideEffect {
             (view.context as Activity).window.statusBarColor =
-                colors.surface.toArgb()
+                colors.background.toArgb()
             ViewCompat.getWindowInsetsController(view)?.isAppearanceLightStatusBars = darkTheme
         }
     }
