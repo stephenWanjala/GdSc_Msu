@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.wantech.gdsc_msu.ui.theme.SurfaceVariantDark
 import com.wantech.gdsc_msu.ui.theme.SurfaceVariantLight
+import com.wantech.gdsc_msu.util.Screen
 
 
 @Composable
@@ -59,11 +60,12 @@ fun LoginSection(navController: NavHostController) {
 
                     },
                     onClickToSignUp = {
-//                        navigator.navigate(CreateAccountScreenDestination) {
-//                            popUpTo(CreateAccountScreenDestination) {
-//                                inclusive = true
-//                            }
-//                        }
+                        navController.clearBackStack(Screen.LoginAccountScreen.route)
+                        navController.navigate(Screen.SignUpAccount.route){
+                            popUpTo(Screen.SignUpAccount.route){
+                                inclusive =true
+                            }
+                        }
                     }
                 ) {
 

@@ -27,6 +27,7 @@ import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.LogoSectio
 import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.PasswordTextField
 import com.wantech.gdsc_msu.ui.theme.SurfaceVariantDark
 import com.wantech.gdsc_msu.ui.theme.SurfaceVariantLight
+import com.wantech.gdsc_msu.util.Screen
 
 
 @Composable
@@ -54,18 +55,16 @@ fun SignUpSection(navController: NavHostController) {
                 elevation = 0.dp
             ) {
                 LoginTextInputFields(onClickLoginButton = {
-//                    navigator.navigate(LoginScreenDestination) {
-//                        popUpTo(LoginScreenDestination) {
-//                            inclusive = true
-//                        }
-//                    }
+                    navController.clearBackStack(Screen.SignUpAccount.route)
+                    navController.navigate(Screen.LoginAccountScreen.route) {
+                        popUpTo(Screen.LoginAccountScreen.route){
+                            inclusive =true
+                        }
+                    }
+
                 },
                     onClickToSignUp = {
-//                        navigator.navigate(MainScreenDestination){
-//                            popUpTo(LoginScreenDestination){
-//                                inclusive =true
-//                            }
-//                        }
+
                     }
                 )
             }
@@ -234,7 +233,6 @@ fun LoginTextInputFields(
                         keyboardType = KeyboardType.Password, imeAction = ImeAction.Done
                     ),
                 )
-//                Spacer(modifier = Modifier.width(8.dp))
 
                 AButton(text = "Sign Up",
                     onClick = onClickToSignUp,
