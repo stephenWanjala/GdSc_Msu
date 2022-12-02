@@ -41,29 +41,33 @@ fun LoginSection(navController: NavHostController) {
                 modifier = Modifier
 //                    .fillMaxWidth()
                     .padding(horizontal = 12.dp, vertical = 32.dp)
-                    .background(color = if (isSystemInDarkTheme()) SurfaceVariantDark else SurfaceVariantLight,
-                    shape = RoundedCornerShape(12.dp)),
-                    contentColor = MaterialTheme.colors.onBackground,
+                    .background(
+                        color = if (isSystemInDarkTheme()) SurfaceVariantDark else SurfaceVariantLight,
+                        shape = RoundedCornerShape(12.dp)
+                    ),
+                contentColor = MaterialTheme.colors.onBackground,
                 backgroundColor = if (isSystemInDarkTheme()) SurfaceVariantDark else SurfaceVariantLight,
                 shape = RoundedCornerShape(12.dp),
-            elevation = 0.dp
+                elevation = 0.dp
 
             ) {
                 LoginTextInputFields(
                     onClickLoginButton = {
-////                        navController.clearBackStack()
-//                        navigator.navigate(HomeScreenDestination){
-//                            popUpTo(LoginScreenDestination){
-//                                inclusive =true
-//                            }
-//                        }
+                        navController
+                            .clearBackStack(route = Screen.LoginAccountScreen.route)
+                        navController
+                            .navigate(Screen.MainHome.route) {
+                                popUpTo(Screen.MainHome.route) {
+                                    inclusive = true
+                                }
+                            }
 
                     },
                     onClickToSignUp = {
                         navController.clearBackStack(Screen.LoginAccountScreen.route)
-                        navController.navigate(Screen.SignUpAccount.route){
-                            popUpTo(Screen.SignUpAccount.route){
-                                inclusive =true
+                        navController.navigate(Screen.SignUpAccount.route) {
+                            popUpTo(Screen.SignUpAccount.route) {
+                                inclusive = true
                             }
                         }
                     }

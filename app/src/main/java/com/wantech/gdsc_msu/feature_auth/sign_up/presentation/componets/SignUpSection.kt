@@ -1,5 +1,6 @@
 package com.wantech.gdsc_msu.feature_auth.sign_up.presentation.componets
 
+import android.content.Intent
 import android.content.res.Configuration
 import android.util.Patterns
 import androidx.compose.foundation.background
@@ -16,6 +17,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -25,6 +27,7 @@ import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.AButton
 import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.InputTextField
 import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.LogoSection
 import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.PasswordTextField
+import com.wantech.gdsc_msu.feature_main.presentation.MainHomeScreen
 import com.wantech.gdsc_msu.ui.theme.SurfaceVariantDark
 import com.wantech.gdsc_msu.ui.theme.SurfaceVariantLight
 import com.wantech.gdsc_msu.util.Screen
@@ -32,6 +35,7 @@ import com.wantech.gdsc_msu.util.Screen
 
 @Composable
 fun SignUpSection(navController: NavHostController) {
+    val context= LocalContext.current
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
@@ -57,14 +61,19 @@ fun SignUpSection(navController: NavHostController) {
                 LoginTextInputFields(onClickLoginButton = {
                     navController.clearBackStack(Screen.SignUpAccount.route)
                     navController.navigate(Screen.LoginAccountScreen.route) {
-                        popUpTo(Screen.LoginAccountScreen.route){
-                            inclusive =true
+                        popUpTo(Screen.LoginAccountScreen.route) {
+                            inclusive = true
                         }
                     }
 
                 },
                     onClickToSignUp = {
+                        navController
+                            .clearBackStack(route = Screen.SignUpAccount.route)
 
+                        context.startActivity(
+                            Intent(context,MainHomeScreen::class.java)
+                        )
                     }
                 )
             }
