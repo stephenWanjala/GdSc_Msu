@@ -30,8 +30,6 @@ fun NavigationHost(navHostController: NavHostController) {
         activity(route = "mainHome"){
             this.activityClass =MainHomeScreen::class
         }
-
-
     }
     
 }
