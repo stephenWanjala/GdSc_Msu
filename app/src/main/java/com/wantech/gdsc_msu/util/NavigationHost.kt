@@ -20,6 +20,7 @@ fun NavigationHost(navHostController: NavHostController) {
         composable(Screen.SignUpAccount.route){
             SignUpScreen(NavController = navHostController)
         }
+//        composable()
     }
     
 }
