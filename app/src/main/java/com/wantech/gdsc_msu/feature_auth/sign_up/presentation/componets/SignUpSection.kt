@@ -71,9 +71,12 @@ fun SignUpSection(navController: NavHostController) {
                         navController
                             .clearBackStack(route = Screen.SignUpAccount.route)
 
-                        context.startActivity(
-                            Intent(context,MainHomeScreen::class.java)
-                        )
+                       navController
+                           .navigate(Screen.MainHome.route) {
+                               popUpTo(Screen.MainHome.route) {
+                                   inclusive = true
+                               }
+                           }
                     }
                 )
             }
