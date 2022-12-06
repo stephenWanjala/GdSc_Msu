@@ -4,7 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 
-class SignUpViewModel:ViewModel() {
+class SignUpViewModel : ViewModel() {
     private val _state = mutableStateOf(SignUpUIState())
     val state: State<SignUpUIState> = _state
 

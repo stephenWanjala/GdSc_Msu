@@ -1,6 +1,8 @@
 plugins {
-    id 'com.android.application'
+    id "com.android.application"
     id 'org.jetbrains.kotlin.android'
+
+
 }
 
 android {
@@ -64,9 +66,16 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
 
     implementation "androidx.compose.material:material-icons-extended:$compose_ui_version"
-    //    coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+    // Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 
     //    navigation
     implementation("androidx.navigation:navigation-compose:$nav_version")
+
+    // Coroutine Lifecycle Scopes
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+
+
 }
