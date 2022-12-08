@@ -1,6 +1,5 @@
 package com.wantech.gdsc_msu.feature_auth.sign_up.presentation.componets
 
-import android.content.Intent
 import android.content.res.Configuration
 import android.util.Patterns
 import androidx.compose.foundation.background
@@ -22,20 +21,23 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.AButton
 import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.InputTextField
 import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.LogoSection
 import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.PasswordTextField
-import com.wantech.gdsc_msu.feature_main.presentation.MainHomeScreen
+import com.wantech.gdsc_msu.feature_auth.sign_up.presentation.SignUpViewModel
+import com.wantech.gdsc_msu.feature_auth.sign_up.presentation.SignupEvent
 import com.wantech.gdsc_msu.ui.theme.SurfaceVariantDark
 import com.wantech.gdsc_msu.ui.theme.SurfaceVariantLight
 import com.wantech.gdsc_msu.util.Screen
 
 
 @Composable
-fun SignUpSection(navController: NavHostController) {
-    val context= LocalContext.current
+fun SignUpSection(navController: NavHostController, viewModel: SignUpViewModel = hiltViewModel()) {
+    val context = LocalContext.current
+    val state = viewModel.state.value
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
@@ -71,12 +73,12 @@ fun SignUpSection(navController: NavHostController) {
                         navController
                             .clearBackStack(route = Screen.SignUpAccount.route)
 
-                       navController
-                           .navigate(Screen.MainHome.route) {
-                               popUpTo(Screen.MainHome.route) {
-                                   inclusive = true
-                               }
-                           }
+                        navController
+                            .navigate(Screen.MainHome.route) {
+                                popUpTo(Screen.MainHome.route) {
+                                    inclusive = true
+                                }
+                            }
                     }
                 )
             }
@@ -90,8 +92,9 @@ fun SignUpSection(navController: NavHostController) {
 @Composable
 fun LoginTextInputFields(
     onClickLoginButton: () -> Unit, onClickToSignUp: () -> Unit,
+    viewModel: SignUpViewModel = hiltViewModel()
 ) {
-
+    val state = viewModel.state.value
     var emailFieldState by remember {
         mutableStateOf("")
     }
@@ -133,16 +136,16 @@ fun LoginTextInputFields(
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     InputTextField(
-                        textValue = userNameFieldState,
+                        textValue = state.userName,
                         labelText = "UserName",
-                        onValueChange = { userNameFieldState = it },
+                        onValueChange = { viewModel.onEvent(SignupEvent.EnteredUsername(it)) },
                         modifier = Modifier.fillMaxWidth(0.5f)
                     )
 
                     InputTextField(
-                        textValue = emailFieldState,
+                        textValue = state.email,
                         labelText = "Email",
-                        onValueChange = { emailFieldState = it },
+                        onValueChange = { viewModel.onEvent(SignupEvent.EnteredEmail(it)) },
                         modifier = Modifier.weight(0.5f),
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Email,
@@ -153,12 +156,12 @@ fun LoginTextInputFields(
                 }
                 PasswordTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    textValue = passwordState,
+                    textValue = state.password,
                     labelText = "Password",
 
                     placeHolder = "Your Password",
                     onValueChange = {
-                        passwordState = it
+                        viewModel.onEvent(SignupEvent.EnteredPassword(it))
 
                     },
                     keyboardOptions = KeyboardOptions(
@@ -173,8 +176,10 @@ fun LoginTextInputFields(
                     onClick = onClickToSignUp,
                     modifier = Modifier.fillMaxWidth(0.7f),
                     buttonEnabled = {
-                        passwordState.isNotBlank() && ((passwordState.length >= 8) && emailFieldState.isNotBlank() && Patterns.EMAIL_ADDRESS.matcher(
-                            emailFieldState
+                        state.email.isNotBlank() && state.password.isNotBlank() &&
+                                state.userName.isNotBlank() && state.password.length > 6 && state.userName.length > 3 &&
+                                state.password.isNotBlank() && ((state.password.length >= 8) && state.email.isNotBlank() && Patterns.EMAIL_ADDRESS.matcher(
+                            state.email
                         ).matches())
                     }
 
@@ -215,15 +220,15 @@ fun LoginTextInputFields(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 InputTextField(
-                    textValue = userNameFieldState,
+                    textValue = state.userName,
                     labelText = "UserName",
-                    onValueChange = { userNameFieldState = it },
+                    onValueChange = { viewModel.onEvent(SignupEvent.EnteredUsername(it)) },
                 )
 
                 InputTextField(
-                    textValue = emailFieldState,
+                    textValue = state.email,
                     labelText = "Email",
-                    onValueChange = { emailFieldState = it },
+                    onValueChange = { viewModel.onEvent(SignupEvent.EnteredEmail(it)) },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Email,
                         imeAction = ImeAction.Next
@@ -233,12 +238,12 @@ fun LoginTextInputFields(
 
 
                 PasswordTextField(
-                    textValue = passwordState,
+                    textValue = state.password,
                     labelText = "Password",
                     placeHolder = "Your Password",
 
                     onValueChange = {
-                        passwordState = it
+                        viewModel.onEvent(SignupEvent.EnteredPassword(it))
 
                     },
                     keyboardOptions = KeyboardOptions(
@@ -250,8 +255,12 @@ fun LoginTextInputFields(
                     onClick = onClickToSignUp,
                     modifier = Modifier.wrapContentSize(),
                     buttonEnabled = {
-                        passwordState.isNotBlank() && ((passwordState.length >= 8) && emailFieldState.isNotBlank() && Patterns.EMAIL_ADDRESS.matcher(
-                            emailFieldState
+                        state.email.isNotBlank() && state.password.isNotBlank() &&
+                                state.userName.isNotBlank() && state.password.length > 6
+                                && state.userName.length > 3 &&
+                                state.password.isNotBlank() && ((state.password.length >= 8)
+                                && state.email.isNotBlank() && Patterns.EMAIL_ADDRESS.matcher(
+                            state.email
                         ).matches())
                     }
 
