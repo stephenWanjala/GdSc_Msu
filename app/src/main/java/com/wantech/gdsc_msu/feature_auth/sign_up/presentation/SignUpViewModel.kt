@@ -31,6 +31,7 @@ class SignUpViewModel @Inject constructor(): ViewModel() {
             }
 
             is SignupEvent.Signup -> {
+
             }
 
             is SignupEvent.ToSignInScreen -> {

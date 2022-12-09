@@ -61,6 +61,7 @@ fun SignUpSection(navController: NavHostController, viewModel: SignUpViewModel =
                 elevation = 0.dp
             ) {
                 LoginTextInputFields(onClickLoginButton = {
+                    viewModel.onEvent(SignupEvent.Signup)
                     navController.clearBackStack(Screen.SignUpAccount.route)
                     navController.navigate(Screen.LoginAccountScreen.route) {
                         popUpTo(Screen.LoginAccountScreen.route) {
