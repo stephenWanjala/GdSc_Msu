@@ -27,6 +27,9 @@ class LoginViewModel
             }
             is LoginUiEvent.Login -> {
             }
+            LoginUiEvent.ToForgotPassword -> {
+
+            }
         }
     }
 }
