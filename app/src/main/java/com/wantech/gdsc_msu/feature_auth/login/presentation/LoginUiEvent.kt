@@ -6,4 +6,5 @@ sealed class LoginUiEvent{
     object TogglePasswordVisibility : LoginUiEvent()
     object ToSignUpScreen : LoginUiEvent()
     object Login : LoginUiEvent()
+    object  ToForgotPassword:LoginUiEvent()
 }
