@@ -14,7 +14,7 @@ class LoginRepositoryImpl @Inject constructor(private val auth: FirebaseAuth) :
             .addOnCanceledListener {
                 return@addOnCanceledListener
             }
-        return false
+        return true
 
 
     }
