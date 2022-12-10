@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "603718160900",
+    "project_id": "gdsc-msu",
+    "storage_bucket": "gdsc-msu.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:603718160900:android:dc5f785f517ef4d3cddb51",
+        "android_client_info": {
+          "package_name": "com.wantech.gdsc_msu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "603718160900-dfnotfnfdsp9mbh44hmc4k9sjd1mm277.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6NtajWWpacdOQ0ZhvPnXq_gOdos4K0kc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "603718160900-dfnotfnfdsp9mbh44hmc4k9sjd1mm277.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
