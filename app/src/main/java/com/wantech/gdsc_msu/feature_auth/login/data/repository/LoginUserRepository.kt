@@ -1,6 +1,11 @@
 package com.wantech.gdsc_msu.feature_auth.login.data.repository
 
+import com.wantech.gdsc_msu.util.SimpleResource
+
 interface LoginUserRepository {
-    suspend fun loginUser(email: String, password: String): Boolean
+    suspend fun login(
+        email: String,
+        password: String
+    ): SimpleResource
 
 }
