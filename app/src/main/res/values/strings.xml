@@ -3,4 +3,5 @@
     <string name="university_name">Maseno University</string>
     <string name="club_name">Google developer Student Clubs</string>
     <string name="title_activity_main_screen">MainScreenActivity</string>
+    <string name="error_unknown">unknown Error</string>
 </resources>
