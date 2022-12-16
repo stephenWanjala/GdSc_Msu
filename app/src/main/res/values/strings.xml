@@ -4,4 +4,6 @@
     <string name="club_name">Google developer Student Clubs</string>
     <string name="title_activity_main_screen">MainScreenActivity</string>
     <string name="error_unknown">unknown Error</string>
+    <string name="error_couldnt_reach_server">oops could not reach the server</string>
+    <string name="network_error">network error check connection</string>
 </resources>
