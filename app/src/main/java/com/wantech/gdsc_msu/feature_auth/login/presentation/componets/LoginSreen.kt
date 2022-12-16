@@ -8,10 +8,9 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
 
 @Composable
-fun LoginScreen(navController: NavHostController) {
+fun LoginScreen(onNavigate: (String) -> Unit, onNavigateToSignUpScreen: (String) -> Unit) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colors.background
@@ -22,7 +21,10 @@ fun LoginScreen(navController: NavHostController) {
             horizontalAlignment = Alignment.CenterHorizontally,
 //            verticalArrangement = Arrangement.Center
         ) {
-            LoginSection(navController)
+            LoginSection(
+                onNavigate = onNavigate,
+                onNavigateToSignUpScreen = onNavigateToSignUpScreen
+            )
         }
     }
 }

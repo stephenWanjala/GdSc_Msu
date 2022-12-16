@@ -22,7 +22,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.AButton
 import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.InputTextField
 import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.LogoSection
@@ -35,9 +34,13 @@ import com.wantech.gdsc_msu.util.Screen
 
 
 @Composable
-fun SignUpSection(navController: NavHostController, viewModel: SignUpViewModel = hiltViewModel()) {
-    val context = LocalContext.current
-    val state = viewModel.state.value
+fun SignUpSection(
+    viewModel: SignUpViewModel = hiltViewModel(),
+    onNavigate: (String) -> Unit,
+    onNavigateToLogin: (String) -> Unit
+) {
+    LocalContext.current
+    viewModel.state.value
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
@@ -60,26 +63,13 @@ fun SignUpSection(navController: NavHostController, viewModel: SignUpViewModel =
                 shape = RoundedCornerShape(12.dp),
                 elevation = 0.dp
             ) {
-                LoginTextInputFields(onClickLoginButton = {
+                LoginTextInputFields(onClickLoginButton = { route ->
                     viewModel.onEvent(SignupEvent.Signup)
-                    navController.clearBackStack(Screen.SignUpAccount.route)
-                    navController.navigate(Screen.LoginAccountScreen.route) {
-                        popUpTo(Screen.LoginAccountScreen.route) {
-                            inclusive = true
-                        }
-                    }
+                    onNavigateToLogin(route)
 
                 },
-                    onClickToSignUp = {
-                        navController
-                            .clearBackStack(route = Screen.SignUpAccount.route)
-
-                        navController
-                            .navigate(Screen.MainHome.route) {
-                                popUpTo(Screen.MainHome.route) {
-                                    inclusive = true
-                                }
-                            }
+                    onClickToSignUp = { route ->
+                        onNavigate(route)
                     }
                 )
             }
@@ -92,19 +82,11 @@ fun SignUpSection(navController: NavHostController, viewModel: SignUpViewModel =
 
 @Composable
 fun LoginTextInputFields(
-    onClickLoginButton: () -> Unit, onClickToSignUp: () -> Unit,
+    onClickLoginButton: (String) -> Unit, onClickToSignUp: (String) -> Unit,
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
-    var emailFieldState by remember {
-        mutableStateOf("")
-    }
-    var userNameFieldState by remember {
-        mutableStateOf("")
-    }
-    var passwordState by remember {
-        mutableStateOf("")
-    }
+
     var orientation by remember {
         mutableStateOf(Configuration.ORIENTATION_PORTRAIT)
     }
@@ -174,7 +156,7 @@ fun LoginTextInputFields(
 
 
                 AButton(text = "Sign Up",
-                    onClick = onClickToSignUp,
+                    onClick = { onClickToSignUp(Screen.MainHome.route) },
                     modifier = Modifier.fillMaxWidth(0.7f),
                     buttonEnabled = {
                         state.email.isNotBlank() && state.password.isNotBlank() &&
@@ -187,7 +169,7 @@ fun LoginTextInputFields(
                 )
 
                 TextButton(
-                    onClick = onClickLoginButton,
+                    onClick = { onClickLoginButton(Screen.LoginAccountScreen.route) },
                     modifier = Modifier.fillMaxWidth(),
                     contentPadding = PaddingValues(2.dp)
                 ) {
@@ -253,7 +235,7 @@ fun LoginTextInputFields(
                 )
 
                 AButton(text = "Sign Up",
-                    onClick = onClickToSignUp,
+                    onClick = { onClickToSignUp(Screen.MainHome.route) },
                     modifier = Modifier.wrapContentSize(),
                     buttonEnabled = {
                         state.email.isNotBlank() && state.password.isNotBlank() &&
@@ -268,7 +250,7 @@ fun LoginTextInputFields(
                 )
 
                 TextButton(
-                    onClick = onClickLoginButton,
+                    onClick = { onClickLoginButton(Screen.LoginAccountScreen.route) },
                     modifier = Modifier.fillMaxWidth(),
                     contentPadding = PaddingValues(2.dp)
                 ) {

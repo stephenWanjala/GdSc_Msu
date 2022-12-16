@@ -21,7 +21,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import com.wantech.gdsc_msu.feature_auth.login.presentation.LoginUiEvent
 import com.wantech.gdsc_msu.feature_auth.login.presentation.LoginViewModel
 import com.wantech.gdsc_msu.ui.theme.SurfaceVariantDark
@@ -31,9 +30,11 @@ import com.wantech.gdsc_msu.util.Screen
 
 @Composable
 fun LoginSection(
-    navController: NavHostController,
+    onNavigate: (String) -> Unit,
+    viewModel: LoginViewModel = hiltViewModel(),
+    onNavigateToSignUpScreen: (String)->Unit,
 
-) {
+    ) {
 
     LazyColumn(
         modifier = Modifier
@@ -59,26 +60,16 @@ fun LoginSection(
 
             ) {
                 LoginTextInputFields(
-                    onClickLoginButton = {
-                        navController
-                            .clearBackStack(route = Screen.LoginAccountScreen.route)
-                        navController
-                            .navigate(Screen.MainHome.route) {
-                                popUpTo(Screen.MainHome.route) {
-                                    inclusive = true
-                                }
-                            }
+                    onClickLoginButton = { route->
+                        onNavigate(route)
 
                     },
-                    onClickToSignUp = {
-                        navController.clearBackStack(Screen.LoginAccountScreen.route)
-                        navController.navigate(Screen.SignUpAccount.route) {
-                            popUpTo(Screen.SignUpAccount.route) {
-                                inclusive = true
-                            }
-                        }
+                    onClickToSignUp = { route->
+                        onNavigateToSignUpScreen(route)
                     },
-                    onForgetPassword = {})
+                    onForgetPassword = {},
+                    viewModel = viewModel
+                )
             }
 
 
@@ -89,8 +80,8 @@ fun LoginSection(
 
 @Composable
 fun LoginTextInputFields(
-    onClickLoginButton: () -> Unit, onClickToSignUp: () -> Unit, onForgetPassword: () -> Unit,
-    viewModel: LoginViewModel = hiltViewModel()
+    onClickLoginButton: (String) -> Unit, onClickToSignUp: (String) -> Unit, onForgetPassword: () -> Unit,
+    viewModel: LoginViewModel
 ) {
     val state = viewModel.state.value
 
@@ -175,7 +166,7 @@ fun LoginTextInputFields(
                 }
 
                 AButton(text = "Login",
-                    onClick = onClickLoginButton,
+                    onClick = { onClickLoginButton(Screen.MainHome.route) },
                     modifier = Modifier.fillMaxWidth(0.7f),
                     buttonEnabled = {
 
@@ -265,7 +256,7 @@ fun LoginTextInputFields(
                 }
 
                 AButton(text = "Login",
-                    onClick = {viewModel.onEvent(LoginUiEvent.Login)},
+                    onClick = { onClickLoginButton(Screen.MainHome.route) },
                     modifier = Modifier.wrapContentSize(),
                     buttonEnabled = {
                         state.password.isNotBlank() && ((state.password.length >= 8) && state.email.isNotBlank() && Patterns.EMAIL_ADDRESS.matcher(
@@ -276,7 +267,7 @@ fun LoginTextInputFields(
                 )
 
                 TextButton(
-                    onClick = {viewModel.onEvent(LoginUiEvent.ToSignUpScreen)},
+                    onClick = { onClickToSignUp(Screen.SignUpAccount.route) },
                     modifier = Modifier.fillMaxWidth(),
                     contentPadding = PaddingValues(2.dp)
                 ) {
