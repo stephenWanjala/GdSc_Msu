@@ -1,6 +1,6 @@
 package com.wantech.gdsc_msu.feature_auth.sign_up.data.repository
 
-import com.wantech.gdsc_msu.feature_auth.login.data.remote.CreateAccountResponse
+import com.google.firebase.auth.AuthResult
 import com.wantech.gdsc_msu.util.Resource
 import kotlinx.coroutines.flow.Flow
 
@@ -9,7 +9,7 @@ interface SignUpUserRepository {
         email: String,
         username: String,
         password: String
-    ): Flow<Resource<CreateAccountResponse>>
+    ): Flow<Resource<AuthResult>>
 
 
 }
