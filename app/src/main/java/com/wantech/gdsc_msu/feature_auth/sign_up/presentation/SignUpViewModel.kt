@@ -4,15 +4,14 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.wantech.gdsc_msu.R
 import com.wantech.gdsc_msu.feature_auth.sign_up.domain.usecase.SignUpUseCase
 import com.wantech.gdsc_msu.util.Resource
 import com.wantech.gdsc_msu.util.UiEvent
-import com.wantech.gdsc_msu.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,6 +26,8 @@ class SignUpViewModel @Inject constructor(
 
     private val _onRegister = MutableSharedFlow<Unit>(replay = 1)
     val onRegister = _onRegister.asSharedFlow()
+    private val _SignUpUIState = MutableSharedFlow<SignUpState>()
+    val signUpIState = _SignUpUIState.asSharedFlow()
 
     fun onEvent(event: SignupEvent) {
         when (event) {
@@ -47,7 +48,11 @@ class SignUpViewModel @Inject constructor(
             }
 
             is SignupEvent.Signup -> {
-                register()
+                signUp(
+                    email = _state.value.email,
+                    password = _state.value.password,
+                    userName = _state.value.userName
+                )
             }
 
             is SignupEvent.ToSignInScreen -> {
@@ -57,26 +62,25 @@ class SignUpViewModel @Inject constructor(
 
     }
 
-    private fun register() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val registerResult = signUpUseCase(
-                email = state.value.email,
-                userName = state.value.userName,
-                password = state.value.password
-            )
-            registerResult.collect { result ->
+    private fun signUp(userName: String, email: String, password: String) =
+        viewModelScope.launch {
+            signUpUseCase(userName, email, password).onEach { result ->
                 when (result) {
-                    is Resource.Error -> {
-                        _eventFlow.emit(
-                            UiEvent.ShowSnackbar(result.uiText ?: UiText.unknownError())
+                    is Resource.Success -> {
+                        _SignUpUIState.emit(
+                            SignUpState(
+                                signUp = result.data
+                            )
                         )
                     }
-                    is Resource.Success -> {
-                        UiEvent.ShowSnackbar(UiText.StringResource(R.string.success_registration))
+                    is Resource.Error -> {
+                        _SignUpUIState.emit(SignUpState(error = result.uiText.toString()))
+                    }
+                    is Resource.Loading -> {
+                        _SignUpUIState.emit(SignUpState(isLoading = true))
                     }
                 }
-            }
+            }.launchIn(viewModelScope)
         }
-    }
 
 }

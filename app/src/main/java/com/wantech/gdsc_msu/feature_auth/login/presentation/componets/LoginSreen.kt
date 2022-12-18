@@ -1,5 +1,8 @@
 package com.wantech.gdsc_msu.feature_auth.login.presentation.componets
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,7 +19,12 @@ fun LoginScreen(onNavigate: (String) -> Unit, onNavigateToSignUpScreen: (String)
         color = MaterialTheme.colors.background
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .animateContentSize(
+                    animationSpec = tween(
+                        durationMillis = 500,
+                    easing = FastOutSlowInEasing)),
 //                .background(if (isSystemInDarkTheme()) SurfaceVariantDark else SurfaceVariantLight,),
             horizontalAlignment = Alignment.CenterHorizontally,
 //            verticalArrangement = Arrangement.Center

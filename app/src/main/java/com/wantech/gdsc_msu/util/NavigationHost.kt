@@ -21,12 +21,15 @@ fun NavigationHost(navHostController: NavHostController) {
                 onNavigate = navHostController::navigate,
                 onNavigateToSignUpScreen = navHostController::navigate
             )
+
         }
         composable(Screen.SignUpAccount.route) {
+
             SignUpScreen(
                 onNavigateToLogin = navHostController::navigate,
                 onNavigate = navHostController::navigate
             )
+
         }
         activity(route = "mainHome") {
             this.activityClass = MainHomeScreen::class

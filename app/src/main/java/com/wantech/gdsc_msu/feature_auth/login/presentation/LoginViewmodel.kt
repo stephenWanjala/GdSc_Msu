@@ -26,10 +26,15 @@ class LoginViewModel
             is LoginUiEvent.ToSignUpScreen -> {
             }
             is LoginUiEvent.Login -> {
+                loginUser(email = _state.value.email, password = _state.value.email)
             }
             LoginUiEvent.ToForgotPassword -> {
 
             }
         }
+    }
+
+    private fun loginUser(email: String, password: String) {
+
     }
 }
