@@ -19,15 +19,29 @@ fun NavigationHost(navHostController: NavHostController) {
         composable(Screen.LoginAccountScreen.route) {
             LoginScreen(
                 onNavigate = navHostController::navigate,
-                onNavigateToSignUpScreen = navHostController::navigate
-            )
+                onNavigateToSignUpScreen = {
+                    navHostController.navigate(Screen.SignUpAccount.route) {
+                        popUpTo(Screen.LoginAccountScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                },
+
+                )
 
         }
         composable(Screen.SignUpAccount.route) {
 
             SignUpScreen(
                 onNavigateToLogin = navHostController::navigate,
-                onNavigate = navHostController::navigate
+                onNavigate = { route ->
+                    navHostController.navigate(route) {
+                        popUpTo(Screen.LoginAccountScreen.route) {
+                            inclusive = true
+                        }
+
+                    }
+                }
             )
 
         }

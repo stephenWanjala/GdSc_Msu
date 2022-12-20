@@ -8,10 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,7 +29,7 @@ import com.wantech.gdsc_msu.util.Screen
 fun LoginSection(
     onNavigate: (String) -> Unit,
     viewModel: LoginViewModel = hiltViewModel(),
-    onNavigateToSignUpScreen: (String)->Unit,
+    onNavigateToSignUpScreen: (String) -> Unit,
 
     ) {
 
@@ -60,11 +57,11 @@ fun LoginSection(
 
             ) {
                 LoginTextInputFields(
-                    onClickLoginButton = { route->
+                    onClickLoginButton = { route ->
                         onNavigate(route)
 
                     },
-                    onClickToSignUp = { route->
+                    onClickToSignUp = { route ->
                         onNavigateToSignUpScreen(route)
                     },
                     onForgetPassword = {},
@@ -80,7 +77,9 @@ fun LoginSection(
 
 @Composable
 fun LoginTextInputFields(
-    onClickLoginButton: (String) -> Unit, onClickToSignUp: (String) -> Unit, onForgetPassword: () -> Unit,
+    onClickLoginButton: (String) -> Unit,
+    onClickToSignUp: (String) -> Unit,
+    onForgetPassword: () -> Unit,
     viewModel: LoginViewModel
 ) {
     val state = viewModel.state.value
@@ -289,7 +288,20 @@ fun LoginTextInputFields(
 
     }
 
+
 }
+
+//@Composable
+//fun LoadingDialog() {
+//    Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+//        CircularProgressIndicator(
+//            color = MaterialTheme.colors.primary,
+//            modifier = Modifier
+//                .size(50.dp)
+//                .align(Alignment.Center)
+//        )
+//    }
+//}
 
 
 

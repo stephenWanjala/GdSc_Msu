@@ -1,6 +1,8 @@
 package com.wantech.gdsc_msu.feature_auth.sign_up.presentation.componets
 
+import android.app.Application
 import android.content.res.Configuration
+import android.util.Log
 import android.util.Patterns
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -8,10 +10,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,61 +21,102 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.AButton
-import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.InputTextField
-import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.LogoSection
-import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.PasswordTextField
+import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.*
+import com.wantech.gdsc_msu.feature_auth.sign_up.presentation.SignUpState
 import com.wantech.gdsc_msu.feature_auth.sign_up.presentation.SignUpViewModel
 import com.wantech.gdsc_msu.feature_auth.sign_up.presentation.SignupEvent
 import com.wantech.gdsc_msu.ui.theme.SurfaceVariantDark
 import com.wantech.gdsc_msu.ui.theme.SurfaceVariantLight
+import com.wantech.gdsc_msu.util.LoadingDialog
 import com.wantech.gdsc_msu.util.Screen
+import com.wantech.gdsc_msu.util.asString
+import kotlinx.coroutines.launch
 
 
 @Composable
 fun SignUpSection(
     viewModel: SignUpViewModel = hiltViewModel(),
     onNavigate: (String) -> Unit,
-    onNavigateToLogin: (String) -> Unit
+    onNavigateToLogin: (String) -> Unit,
+    application: Application = LocalContext.current.applicationContext as Application
 ) {
     LocalContext.current
     viewModel.state.value
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+    val signUpUiState = viewModel.signUpIState.collectAsState(initial = SignUpState())
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        }
     ) {
-        item {
-            LogoSection()
-            Card(
-                modifier = Modifier
-                    .padding(horizontal = 12.dp, vertical = 32.dp)
-                    .background(
-                        color = if (isSystemInDarkTheme()) SurfaceVariantDark else SurfaceVariantLight,
-                        shape = RoundedCornerShape(12.dp)
-                    ),
-                contentColor = MaterialTheme.colors.onBackground,
-                backgroundColor =
-                if (isSystemInDarkTheme()) SurfaceVariantDark else SurfaceVariantLight,
-                shape = RoundedCornerShape(12.dp),
-                elevation = 0.dp
-            ) {
-                LoginTextInputFields(onClickLoginButton = { route ->
-                    viewModel.onEvent(SignupEvent.Signup)
-                    onNavigateToLogin(route)
+        val unUsedpadding = it.calculateBottomPadding()
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            item {
+                LogoSection()
+                Card(
+                    modifier = Modifier
+                        .padding(horizontal = 12.dp, vertical = 32.dp)
+                        .background(
+                            color = if (isSystemInDarkTheme()) SurfaceVariantDark else SurfaceVariantLight,
+                            shape = RoundedCornerShape(12.dp)
+                        ),
+                    contentColor = MaterialTheme.colors.onBackground,
+                    backgroundColor =
+                    if (isSystemInDarkTheme()) SurfaceVariantDark else SurfaceVariantLight,
+                    shape = RoundedCornerShape(12.dp),
+                    elevation = 0.dp
+                ) {
+                    Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                    LoginTextInputFields(
+                        onClickLoginButton = { route ->
 
-                },
-                    onClickToSignUp = { route ->
-                        onNavigate(route)
+                            onNavigateToLogin(route)
+
+                        },
+                        onClickToSignUp = { _ ->
+                            viewModel.onEvent(SignupEvent.Signup)
+
+                        },
+                    )
+                        if (signUpUiState.value.isLoading) {
+                            LoadingDialog()
+                        }
                     }
-                )
-            }
 
+                }
+
+
+            }
+        }
+        if (signUpUiState.value.error != null) {
+            LaunchedEffect(true) {
+                scope.launch {
+                    snackbarHostState.showSnackbar(
+                        message = signUpUiState.value.error!!.asString(context = application),
+                        actionLabel = "Dismiss"
+                    )
+                }
+            }
+        }
+    }
+
+    if (signUpUiState.value.signUp != null) {
+        Log.d("SignUpSection", "signUpUiState.value.signUp !=null")
+        onNavigate(Screen.MainHome.route)
+        LaunchedEffect(true) {
 
         }
     }
+//    if (signUpUiState.value.isLoading) {
+//        LoadingDialog()
+//    }
 }
 
 
@@ -271,6 +311,7 @@ fun LoginTextInputFields(
         }
 
     }
+
 
 }
 

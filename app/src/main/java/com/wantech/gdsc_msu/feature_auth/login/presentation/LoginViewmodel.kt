@@ -3,12 +3,20 @@ package com.wantech.gdsc_msu.feature_auth.login.presentation
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.wantech.gdsc_msu.feature_auth.login.domain.usecase.LoginUseCase
+import com.wantech.gdsc_msu.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel
-@Inject constructor() : ViewModel() {
+@Inject constructor(
+   private val loginUseCase: LoginUseCase
+) : ViewModel() {
     private val _state = mutableStateOf(LoginUiState())
     val state: State<LoginUiState> = _state
 
@@ -35,6 +43,22 @@ class LoginViewModel
     }
 
     private fun loginUser(email: String, password: String) {
+        viewModelScope.launch {
+            loginUseCase(email, password).onEach { result ->
 
+                when (result) {
+                    is Resource.Success -> {
+
+                    }
+                    is Resource.Error -> {
+
+                    }
+                    is Resource.Loading -> {
+
+                    }
+                }
+            }.launchIn(viewModelScope)
+        }
     }
+
 }

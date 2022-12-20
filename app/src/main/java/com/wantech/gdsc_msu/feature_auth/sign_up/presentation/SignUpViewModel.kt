@@ -26,8 +26,8 @@ class SignUpViewModel @Inject constructor(
 
     private val _onRegister = MutableSharedFlow<Unit>(replay = 1)
     val onRegister = _onRegister.asSharedFlow()
-    private val _SignUpUIState = MutableSharedFlow<SignUpState>()
-    val signUpIState = _SignUpUIState.asSharedFlow()
+    private val _signUpUIState = MutableSharedFlow<SignUpState>()
+    val signUpIState = _signUpUIState.asSharedFlow()
 
     fun onEvent(event: SignupEvent) {
         when (event) {
@@ -67,17 +67,17 @@ class SignUpViewModel @Inject constructor(
             signUpUseCase(userName, email, password).onEach { result ->
                 when (result) {
                     is Resource.Success -> {
-                        _SignUpUIState.emit(
+                        _signUpUIState.emit(
                             SignUpState(
                                 signUp = result.data
                             )
                         )
                     }
                     is Resource.Error -> {
-                        _SignUpUIState.emit(SignUpState(error = result.uiText.toString()))
+                        _signUpUIState.emit(SignUpState(error = result.uiText))
                     }
                     is Resource.Loading -> {
-                        _SignUpUIState.emit(SignUpState(isLoading = true))
+                        _signUpUIState.emit(SignUpState(isLoading = true))
                     }
                 }
             }.launchIn(viewModelScope)
