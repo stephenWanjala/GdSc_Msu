@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.wantech.gdsc_msu.feature_auth.login.domain.usecase.LoginUseCase
 import com.wantech.gdsc_msu.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -15,10 +17,12 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel
 @Inject constructor(
-   private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase
 ) : ViewModel() {
     private val _state = mutableStateOf(LoginUiState())
     val state: State<LoginUiState> = _state
+    private val _loginUIState = MutableSharedFlow<LoginState>()
+    val loginUpIState = _loginUIState.asSharedFlow()
 
     fun onEvent(event: LoginUiEvent) {
         when (event) {
@@ -48,13 +52,19 @@ class LoginViewModel
 
                 when (result) {
                     is Resource.Success -> {
-
+                        _loginUIState.emit(
+                            LoginState(login = result.data)
+                        )
                     }
                     is Resource.Error -> {
-
+                        _loginUIState.emit(
+                            LoginState(error = result.uiText)
+                        )
                     }
                     is Resource.Loading -> {
-
+                        _loginUIState.emit(
+                            LoginState(isLoading = true)
+                        )
                     }
                 }
             }.launchIn(viewModelScope)

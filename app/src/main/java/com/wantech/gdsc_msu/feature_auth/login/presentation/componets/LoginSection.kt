@@ -13,11 +13,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.wantech.gdsc_msu.R
 import com.wantech.gdsc_msu.feature_auth.login.presentation.LoginUiEvent
 import com.wantech.gdsc_msu.feature_auth.login.presentation.LoginViewModel
 import com.wantech.gdsc_msu.ui.theme.SurfaceVariantDark
@@ -32,44 +34,55 @@ fun LoginSection(
     onNavigateToSignUpScreen: (String) -> Unit,
 
     ) {
+    val coroutineScope = rememberCoroutineScope()
+    val snackbarHostState = remember {
+        SnackbarHostState()
+    }
 
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        }
     ) {
-        item {
-            LogoSection()
-            Card(
-                modifier = Modifier
+        val unUsedPadding = it.calculateTopPadding()
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            item {
+                LogoSection()
+                Card(
+                    modifier = Modifier
 //                    .fillMaxWidth()
-                    .padding(horizontal = 12.dp, vertical = 32.dp)
-                    .background(
-                        color = if (isSystemInDarkTheme()) SurfaceVariantDark else SurfaceVariantLight,
-                        shape = RoundedCornerShape(12.dp)
-                    ),
-                contentColor = MaterialTheme.colors.onBackground,
-                backgroundColor = if (isSystemInDarkTheme()) SurfaceVariantDark else SurfaceVariantLight,
-                shape = RoundedCornerShape(12.dp),
-                elevation = 0.dp
+                        .padding(horizontal = 12.dp, vertical = 32.dp)
+                        .background(
+                            color = if (isSystemInDarkTheme()) SurfaceVariantDark else SurfaceVariantLight,
+                            shape = RoundedCornerShape(12.dp)
+                        ),
+                    contentColor = MaterialTheme.colors.onBackground,
+                    backgroundColor = if (isSystemInDarkTheme()) SurfaceVariantDark else SurfaceVariantLight,
+                    shape = RoundedCornerShape(12.dp),
+                    elevation = 0.dp
 
-            ) {
-                LoginTextInputFields(
-                    onClickLoginButton = { route ->
-                        onNavigate(route)
+                ) {
+                    LoginTextInputFields(
+                        onClickLoginButton = { route ->
+                            onNavigate(route)
 
-                    },
-                    onClickToSignUp = { route ->
-                        onNavigateToSignUpScreen(route)
-                    },
-                    onForgetPassword = {},
-                    viewModel = viewModel
-                )
+                        },
+                        onClickToSignUp = { route ->
+                            onNavigateToSignUpScreen(route)
+                        },
+                        onForgetPassword = {},
+                        viewModel = viewModel
+                    )
+                }
+
+
             }
-
-
         }
     }
 }
@@ -103,7 +116,7 @@ fun LoginTextInputFields(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Login",
+                    text = stringResource(id = R.string.login),
                     style = MaterialTheme.typography.h4,
                     textAlign = TextAlign.Center
                 )
@@ -157,14 +170,14 @@ fun LoginTextInputFields(
                     contentPadding = PaddingValues(1.dp),
                 ) {
                     Text(
-                        text = "Forgot password?",
+                        text = stringResource(id = R.string.forgot_password),
                         color = MaterialTheme.colors.surface,
                         style = MaterialTheme.typography.caption,
                         textAlign = TextAlign.Center
                     )
                 }
 
-                AButton(text = "Login",
+                AButton(text = stringResource(id = R.string.login),
                     onClick = { onClickLoginButton(Screen.MainHome.route) },
                     modifier = Modifier.fillMaxWidth(0.7f),
                     buttonEnabled = {
@@ -182,13 +195,13 @@ fun LoginTextInputFields(
                     contentPadding = PaddingValues(2.dp)
                 ) {
                     Text(
-                        text = "Don't Have Account?",
+                        text = stringResource(id = R.string.dont_Have_account),
                         color = MaterialTheme.colors.surface,
 
                         )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = "Sign Up",
+                        text = stringResource(id = R.string.Sign_up),
                         color = MaterialTheme.colors.surface,
                         modifier = Modifier.padding(4.dp)
                     )
@@ -205,7 +218,7 @@ fun LoginTextInputFields(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Login",
+                    text = stringResource(id = R.string.login),
                     style = MaterialTheme.typography.h5,
                     textAlign = TextAlign.Center
                 )
@@ -247,14 +260,14 @@ fun LoginTextInputFields(
                     contentPadding = PaddingValues(1.dp),
                 ) {
                     Text(
-                        text = "Forgot password?",
+                        text = stringResource(R.string.forgot_password),
                         color = MaterialTheme.colors.surface,
                         style = MaterialTheme.typography.caption,
                         textAlign = TextAlign.Center
                     )
                 }
 
-                AButton(text = "Login",
+                AButton(text = stringResource(R.string.login),
                     onClick = { onClickLoginButton(Screen.MainHome.route) },
                     modifier = Modifier.wrapContentSize(),
                     buttonEnabled = {
@@ -271,13 +284,13 @@ fun LoginTextInputFields(
                     contentPadding = PaddingValues(2.dp)
                 ) {
                     Text(
-                        text = "Don't Have Account?",
+                        text = stringResource(R.string.dont_Have_account),
                         color = MaterialTheme.colors.surface,
 
                         )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = "Sign Up",
+                        text = stringResource(R.string.Sign_up),
                         color = MaterialTheme.colors.surface,
                         modifier = Modifier.padding(4.dp)
                     )
@@ -291,17 +304,6 @@ fun LoginTextInputFields(
 
 }
 
-//@Composable
-//fun LoadingDialog() {
-//    Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-//        CircularProgressIndicator(
-//            color = MaterialTheme.colors.primary,
-//            modifier = Modifier
-//                .size(50.dp)
-//                .align(Alignment.Center)
-//        )
-//    }
-//}
 
 
 
