@@ -42,8 +42,7 @@ fun SignUpSection(
     onNavigateToLogin: (String) -> Unit,
     application: Application = LocalContext.current.applicationContext as Application
 ) {
-    LocalContext.current
-    viewModel.state.value
+
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val signUpUiState = viewModel.signUpIState.collectAsState(initial = SignUpState())
@@ -52,7 +51,7 @@ fun SignUpSection(
             SnackbarHost(hostState = snackbarHostState)
         }
     ) {
-        val unUsedpadding = it.calculateBottomPadding()
+        val uselessPadding = it.calculateBottomPadding()
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
@@ -82,7 +81,7 @@ fun SignUpSection(
                                 onNavigateToLogin(route)
 
                             },
-                            onClickToSignUp = { _ ->
+                            onClickToSignUp = {
                                 viewModel.onEvent(SignupEvent.Signup)
 
                             },

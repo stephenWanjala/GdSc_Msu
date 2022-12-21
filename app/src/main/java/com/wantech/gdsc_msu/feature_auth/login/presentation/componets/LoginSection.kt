@@ -40,7 +40,7 @@ fun LoginSection(
     application: Application = LocalContext.current.applicationContext as Application
 
 ) {
-    val coroutineScope = rememberCoroutineScope()
+
     val snackbarHostState = remember {
         SnackbarHostState()
     }
