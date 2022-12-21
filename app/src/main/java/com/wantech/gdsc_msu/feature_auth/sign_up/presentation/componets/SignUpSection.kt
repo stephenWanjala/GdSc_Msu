@@ -15,11 +15,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.wantech.gdsc_msu.R
+import com.wantech.gdsc_msu.core.presentation.LoadingDialog
 import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.AButton
 import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.InputTextField
 import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.LogoSection
@@ -29,7 +32,6 @@ import com.wantech.gdsc_msu.feature_auth.sign_up.presentation.SignUpViewModel
 import com.wantech.gdsc_msu.feature_auth.sign_up.presentation.SignupEvent
 import com.wantech.gdsc_msu.ui.theme.SurfaceVariantDark
 import com.wantech.gdsc_msu.ui.theme.SurfaceVariantLight
-import com.wantech.gdsc_msu.util.LoadingDialog
 import com.wantech.gdsc_msu.util.Screen
 import com.wantech.gdsc_msu.util.asString
 import kotlinx.coroutines.launch
@@ -40,7 +42,8 @@ fun SignUpSection(
     viewModel: SignUpViewModel = hiltViewModel(),
     onNavigate: (String) -> Unit,
     onNavigateToLogin: (String) -> Unit,
-    application: Application = LocalContext.current.applicationContext as Application
+    application: Application = LocalContext.current.applicationContext as Application,
+    popBackStack: () -> Unit
 ) {
 
     val snackbarHostState = remember { SnackbarHostState() }
@@ -110,6 +113,7 @@ fun SignUpSection(
 
     if (signUpUiState.value.signUp != null) {
         onNavigate(Screen.MainHome.route)
+        popBackStack()
     }
 
 }
@@ -190,7 +194,7 @@ fun LoginTextInputFields(
                 )
 
 
-                AButton(text = "Sign Up",
+                AButton(text = stringResource(id = R.string.sign_up),
                     onClick = { onClickToSignUp(Screen.MainHome.route) },
                     modifier = Modifier.fillMaxWidth(0.7f),
                     buttonEnabled = {
@@ -209,12 +213,12 @@ fun LoginTextInputFields(
                     contentPadding = PaddingValues(2.dp)
                 ) {
                     Text(
-                        text = "Already Have an Account?",
+                        text = stringResource(id = R.string.already_have_Account),
                         color = MaterialTheme.colors.surface,
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = "Sign In",
+                        text = stringResource(id = R.string.sign_in),
                         color = MaterialTheme.colors.surface,
                         modifier = Modifier.padding(4.dp),
                     )
@@ -231,7 +235,7 @@ fun LoginTextInputFields(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Create Account",
+                    text = stringResource(R.string.create_Account),
                     style = MaterialTheme.typography.h4,
                     textAlign = TextAlign.Center
                 )
@@ -269,7 +273,7 @@ fun LoginTextInputFields(
                     ),
                 )
 
-                AButton(text = "Sign Up",
+                AButton(text = stringResource(id = R.string.sign_up),
                     onClick = { onClickToSignUp(Screen.MainHome.route) },
                     modifier = Modifier.wrapContentSize(),
                     buttonEnabled = {
@@ -290,13 +294,13 @@ fun LoginTextInputFields(
                     contentPadding = PaddingValues(2.dp)
                 ) {
                     Text(
-                        text = "Already Have Account?",
+                        text = stringResource(R.string.already_have_Account),
                         color = MaterialTheme.colors.surface,
 
                         )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = "Sign In",
+                        text = stringResource(R.string.sign_in),
                         color = MaterialTheme.colors.surface,
                         modifier = Modifier.padding(4.dp)
                     )

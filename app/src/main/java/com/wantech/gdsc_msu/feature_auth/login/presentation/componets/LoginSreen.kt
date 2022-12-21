@@ -9,30 +9,51 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.wantech.gdsc_msu.feature_auth.login.presentation.LoginViewModel
+import com.wantech.gdsc_msu.util.Screen
 
 @Composable
-fun LoginScreen(onNavigate: (String) -> Unit, onNavigateToSignUpScreen: (String) -> Unit) {
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colors.background
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .animateContentSize(
-                    animationSpec = tween(
-                        durationMillis = 500,
-                    easing = FastOutSlowInEasing)),
-//                .background(if (isSystemInDarkTheme()) SurfaceVariantDark else SurfaceVariantLight,),
-            horizontalAlignment = Alignment.CenterHorizontally,
-//            verticalArrangement = Arrangement.Center
+fun LoginScreen(
+    onNavigate: (String) -> Unit,
+    onNavigateToSignUpScreen: (String) -> Unit,
+    viewModel: LoginViewModel = hiltViewModel()
+) {
+    val isUserExist = viewModel.isCurrentUserExist.collectAsState(initial = true)
+    LaunchedEffect(Unit) {
+        if (isUserExist.value) {
+            onNavigate(Screen.MainHome.route)
+        }
+    }
+
+    if (!isUserExist.value) {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colors.background
         ) {
-            LoginSection(
-                onNavigate = onNavigate,
-                onNavigateToSignUpScreen = onNavigateToSignUpScreen
-            )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .animateContentSize(
+                        animationSpec = tween(
+                            durationMillis = 500,
+                            easing = FastOutSlowInEasing
+                        )
+                    ),
+//                .background(if (isSystemInDarkTheme()) SurfaceVariantDark else SurfaceVariantLight,),
+                horizontalAlignment = Alignment.CenterHorizontally,
+//            verticalArrangement = Arrangement.Center
+            ) {
+                LoginSection(
+                    onNavigate = onNavigate,
+                    onNavigateToSignUpScreen = onNavigateToSignUpScreen,
+                    viewModel = viewModel
+                )
+            }
         }
     }
 }

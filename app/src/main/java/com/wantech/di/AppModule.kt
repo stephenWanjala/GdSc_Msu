@@ -1,11 +1,11 @@
 package com.wantech.di
 
 import com.google.firebase.auth.FirebaseAuth
-import com.wantech.gdsc_msu.feature_auth.login.data.repository.LoginUserRepository
-import com.wantech.gdsc_msu.feature_auth.login.domain.repositoryImpl.LoginRepositoryImpl
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.wantech.gdsc_msu.core.data.repository.AuthRepository
+import com.wantech.gdsc_msu.core.domain.repositoryImpl.AuthRepositoryImpl
 import com.wantech.gdsc_msu.feature_auth.login.domain.usecase.LoginUseCase
-import com.wantech.gdsc_msu.feature_auth.sign_up.data.repository.SignUpUserRepository
-import com.wantech.gdsc_msu.feature_auth.sign_up.domain.repositoryImpl.SignUpUserRepositoryImpl
 import com.wantech.gdsc_msu.feature_auth.sign_up.domain.usecase.SignUpUseCase
 import dagger.Module
 import dagger.Provides
@@ -17,31 +17,28 @@ import javax.inject.Singleton
 @Module
 object AppModule {
 
-    @Provides
-    @Singleton
-    fun provideSignUpUserRepository(auth: FirebaseAuth): SignUpUserRepository {
-        return SignUpUserRepositoryImpl(auth = auth)
-    }
 
     @Provides
     @Singleton
     fun provideFirebaseAuth(): FirebaseAuth {
-        return FirebaseAuth.getInstance()
+        return Firebase.auth
     }
 
     @Provides
     @Singleton
-    fun provideSignUpUseCase(repository: SignUpUserRepository): SignUpUseCase {
-        return SignUpUseCase(repository)
-    }
+    fun provideAuthRepository(firebaseAuth: FirebaseAuth): AuthRepository =
+        AuthRepositoryImpl(
+            firebaseAuth = firebaseAuth
+        )
+
 
     @Provides
     @Singleton
-    fun provideLoginUserRepository(auth: FirebaseAuth): LoginUserRepository =
-        LoginRepositoryImpl(auth)
+    fun provideSignUpUseCase(authRepository: AuthRepository): SignUpUseCase =
+        SignUpUseCase(authRepository)
 
     @Provides
     @Singleton
-    fun provideLoginUseCase(repository: LoginUserRepository): LoginUseCase =
+    fun provideLoginUseCase(repository: AuthRepository): LoginUseCase =
         LoginUseCase(repository)
 }

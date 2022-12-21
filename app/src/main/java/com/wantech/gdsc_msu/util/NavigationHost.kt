@@ -41,6 +41,9 @@ fun NavigationHost(navHostController: NavHostController) {
                         }
 
                     }
+                },
+                popBackStack = {
+                    navHostController.popBackStack(Screen.SignUpAccount.route, true)
                 }
             )
 

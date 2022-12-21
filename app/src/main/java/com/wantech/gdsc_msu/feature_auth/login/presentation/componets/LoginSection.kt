@@ -22,12 +22,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.wantech.gdsc_msu.R
+import com.wantech.gdsc_msu.core.presentation.LoadingDialog
 import com.wantech.gdsc_msu.feature_auth.login.presentation.LoginState
 import com.wantech.gdsc_msu.feature_auth.login.presentation.LoginUiEvent
 import com.wantech.gdsc_msu.feature_auth.login.presentation.LoginViewModel
 import com.wantech.gdsc_msu.ui.theme.SurfaceVariantDark
 import com.wantech.gdsc_msu.ui.theme.SurfaceVariantLight
-import com.wantech.gdsc_msu.util.LoadingDialog
 import com.wantech.gdsc_msu.util.Screen
 import com.wantech.gdsc_msu.util.asString
 
@@ -35,7 +35,7 @@ import com.wantech.gdsc_msu.util.asString
 @Composable
 fun LoginSection(
     onNavigate: (String) -> Unit,
-    viewModel: LoginViewModel = hiltViewModel(),
+    viewModel: LoginViewModel ,
     onNavigateToSignUpScreen: (String) -> Unit,
     application: Application = LocalContext.current.applicationContext as Application
 
@@ -109,10 +109,15 @@ fun LoginSection(
         }
 
     }
-
-    if (loginState.value.login != null) {
-        onNavigate(Screen.MainHome.route)
+    LaunchedEffect(Unit) {
+        if (loginState.value.login != null) {
+            snackbarHostState.showSnackbar(
+                message = "welcome ${loginState.value.login!!.user?.email}"
+            )
+            onNavigate(Screen.MainHome.route)
+        }
     }
+
 }
 
 
@@ -229,7 +234,7 @@ fun LoginTextInputFields(
                         )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = stringResource(id = R.string.Sign_up),
+                        text = stringResource(id = R.string.sign_up),
                         color = MaterialTheme.colors.surface,
                         modifier = Modifier.padding(4.dp)
                     )
@@ -318,7 +323,7 @@ fun LoginTextInputFields(
                         )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = stringResource(R.string.Sign_up),
+                        text = stringResource(R.string.sign_up),
                         color = MaterialTheme.colors.surface,
                         modifier = Modifier.padding(4.dp)
                     )

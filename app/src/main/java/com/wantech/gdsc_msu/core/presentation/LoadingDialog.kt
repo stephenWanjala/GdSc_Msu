@@ -1,4 +1,4 @@
-package com.wantech.gdsc_msu.util
+package com.wantech.gdsc_msu.core.presentation
 
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.size

@@ -48,7 +48,8 @@ fun PasswordTextField(
     ) {
         val keyBoardController = LocalSoftwareKeyboardController.current
         OutlinedTextField(
-            value = textValue.take(if (textValue.length >= 10) 10 else textValue.length),
+//            value = textValue.take(if (textValue.length >= 10) 10 else textValue.length),
+            value = textValue,
             onValueChange = onValueChange,
             keyboardOptions = keyboardOptions,
             label = { Text(text = labelText) },

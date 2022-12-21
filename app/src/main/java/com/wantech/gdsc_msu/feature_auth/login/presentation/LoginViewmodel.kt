@@ -4,26 +4,24 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.wantech.gdsc_msu.feature_auth.login.domain.usecase.LoginUseCase
+import com.wantech.gdsc_msu.core.data.repository.AuthRepository
 import com.wantech.gdsc_msu.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel
 @Inject constructor(
-    private val loginUseCase: LoginUseCase
+    private val authRepository: AuthRepository
 ) : ViewModel() {
     private val _state = mutableStateOf(LoginUiState())
     val state: State<LoginUiState> = _state
     private val _loginUIState = MutableSharedFlow<LoginState>()
     val loginUpIState = _loginUIState.asSharedFlow()
 
+       
     fun onEvent(event: LoginUiEvent) {
         when (event) {
             is LoginUiEvent.EnteredEmail -> {
@@ -48,7 +46,7 @@ class LoginViewModel
 
     private fun loginUser(email: String, password: String) {
         viewModelScope.launch {
-            loginUseCase(email, password).onEach { result ->
+            authRepository.signInWithEmailAndPassword(email, password).onEach { result ->
 
                 when (result) {
                     is Resource.Success -> {
@@ -71,4 +69,8 @@ class LoginViewModel
         }
     }
 
+    val isCurrentUserExist: Flow<Boolean>
+        get() {
+            return authRepository.isCurrentUserExist()
+        }
 }

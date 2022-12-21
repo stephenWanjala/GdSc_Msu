@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.wantech.gdsc_msu.feature_auth.sign_up.domain.usecase.SignUpUseCase
 import com.wantech.gdsc_msu.util.Resource
-import com.wantech.gdsc_msu.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -21,11 +20,7 @@ class SignUpViewModel @Inject constructor(
 ) : ViewModel() {
     private val _state = mutableStateOf(SignUpUIState())
     val state: State<SignUpUIState> = _state
-    private val _eventFlow = MutableSharedFlow<UiEvent>()
-    val eventFlow = _eventFlow.asSharedFlow()
 
-    private val _onRegister = MutableSharedFlow<Unit>(replay = 1)
-    val onRegister = _onRegister.asSharedFlow()
     private val _signUpUIState = MutableSharedFlow<SignUpState>()
     val signUpIState = _signUpUIState.asSharedFlow()
 
