@@ -1,5 +1,6 @@
 package com.wantech.gdsc_msu.feature_auth.login.presentation.componets
 
+import android.app.Application
 import android.content.res.Configuration
 import android.util.Patterns
 import androidx.compose.foundation.background
@@ -13,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -20,11 +22,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.wantech.gdsc_msu.R
+import com.wantech.gdsc_msu.feature_auth.login.presentation.LoginState
 import com.wantech.gdsc_msu.feature_auth.login.presentation.LoginUiEvent
 import com.wantech.gdsc_msu.feature_auth.login.presentation.LoginViewModel
 import com.wantech.gdsc_msu.ui.theme.SurfaceVariantDark
 import com.wantech.gdsc_msu.ui.theme.SurfaceVariantLight
+import com.wantech.gdsc_msu.util.LoadingDialog
 import com.wantech.gdsc_msu.util.Screen
+import com.wantech.gdsc_msu.util.asString
 
 
 @Composable
@@ -32,12 +37,14 @@ fun LoginSection(
     onNavigate: (String) -> Unit,
     viewModel: LoginViewModel = hiltViewModel(),
     onNavigateToSignUpScreen: (String) -> Unit,
+    application: Application = LocalContext.current.applicationContext as Application
 
-    ) {
+) {
     val coroutineScope = rememberCoroutineScope()
     val snackbarHostState = remember {
         SnackbarHostState()
     }
+    val loginState = viewModel.loginUpIState.collectAsState(LoginState())
 
     Scaffold(
         snackbarHost = {
@@ -68,22 +75,43 @@ fun LoginSection(
                     elevation = 0.dp
 
                 ) {
-                    LoginTextInputFields(
-                        onClickLoginButton = { route ->
-                            onNavigate(route)
+                    Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                        LoginTextInputFields(
+                            onClickLoginButton = { route ->
+//                                onNavigate(route)
+                                viewModel.onEvent(LoginUiEvent.Login)
 
-                        },
-                        onClickToSignUp = { route ->
-                            onNavigateToSignUpScreen(route)
-                        },
-                        onForgetPassword = {},
-                        viewModel = viewModel
-                    )
+                            },
+                            onClickToSignUp = { route ->
+                                onNavigateToSignUpScreen(route)
+                            },
+                            onForgetPassword = {},
+                            viewModel = viewModel
+                        )
+                        if (loginState.value.isLoading) {
+                            LoadingDialog()
+                        }
+
+                    }
                 }
 
 
             }
         }
+    }
+
+    if (loginState.value.error != null) {
+        LaunchedEffect(true) {
+            snackbarHostState.showSnackbar(
+                message = loginState.value.error!!.asString(context = application),
+                actionLabel = "dismiss"
+            )
+        }
+
+    }
+
+    if (loginState.value.login != null) {
+        onNavigate(Screen.MainHome.route)
     }
 }
 

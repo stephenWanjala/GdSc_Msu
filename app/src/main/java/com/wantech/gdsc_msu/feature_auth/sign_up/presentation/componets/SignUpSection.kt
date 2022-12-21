@@ -2,7 +2,6 @@ package com.wantech.gdsc_msu.feature_auth.sign_up.presentation.componets
 
 import android.app.Application
 import android.content.res.Configuration
-import android.util.Log
 import android.util.Patterns
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -21,7 +20,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.*
+import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.AButton
+import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.InputTextField
+import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.LogoSection
+import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.PasswordTextField
 import com.wantech.gdsc_msu.feature_auth.sign_up.presentation.SignUpState
 import com.wantech.gdsc_msu.feature_auth.sign_up.presentation.SignUpViewModel
 import com.wantech.gdsc_msu.feature_auth.sign_up.presentation.SignupEvent
@@ -74,17 +76,17 @@ fun SignUpSection(
                     elevation = 0.dp
                 ) {
                     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                    LoginTextInputFields(
-                        onClickLoginButton = { route ->
+                        LoginTextInputFields(
+                            onClickLoginButton = { route ->
 
-                            onNavigateToLogin(route)
+                                onNavigateToLogin(route)
 
-                        },
-                        onClickToSignUp = { _ ->
-                            viewModel.onEvent(SignupEvent.Signup)
+                            },
+                            onClickToSignUp = { _ ->
+                                viewModel.onEvent(SignupEvent.Signup)
 
-                        },
-                    )
+                            },
+                        )
                         if (signUpUiState.value.isLoading) {
                             LoadingDialog()
                         }
@@ -108,15 +110,9 @@ fun SignUpSection(
     }
 
     if (signUpUiState.value.signUp != null) {
-        Log.d("SignUpSection", "signUpUiState.value.signUp !=null")
         onNavigate(Screen.MainHome.route)
-        LaunchedEffect(true) {
-
-        }
     }
-//    if (signUpUiState.value.isLoading) {
-//        LoadingDialog()
-//    }
+
 }
 
 
