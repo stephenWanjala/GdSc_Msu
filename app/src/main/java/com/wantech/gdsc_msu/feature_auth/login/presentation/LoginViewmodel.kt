@@ -21,7 +21,7 @@ class LoginViewModel
     private val _loginUIState = MutableSharedFlow<LoginState>()
     val loginUpIState = _loginUIState.asSharedFlow()
 
-       
+
     fun onEvent(event: LoginUiEvent) {
         when (event) {
             is LoginUiEvent.EnteredEmail -> {
@@ -36,7 +36,7 @@ class LoginViewModel
             is LoginUiEvent.ToSignUpScreen -> {
             }
             is LoginUiEvent.Login -> {
-                loginUser(email = _state.value.email, password = _state.value.email)
+                loginUser(email = _state.value.email, password = _state.value.password)
             }
             LoginUiEvent.ToForgotPassword -> {
 

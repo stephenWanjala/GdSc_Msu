@@ -20,7 +20,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.wantech.gdsc_msu.R
 import com.wantech.gdsc_msu.core.presentation.LoadingDialog
 import com.wantech.gdsc_msu.feature_auth.login.presentation.LoginState
@@ -35,7 +34,7 @@ import com.wantech.gdsc_msu.util.asString
 @Composable
 fun LoginSection(
     onNavigate: (String) -> Unit,
-    viewModel: LoginViewModel ,
+    viewModel: LoginViewModel,
     onNavigateToSignUpScreen: (String) -> Unit,
     application: Application = LocalContext.current.applicationContext as Application
 
@@ -211,7 +210,7 @@ fun LoginTextInputFields(
                 }
 
                 AButton(text = stringResource(id = R.string.login),
-                    onClick = { onClickLoginButton(Screen.MainHome.route) },
+                    onClick = { viewModel.onEvent(LoginUiEvent.Login) },
                     modifier = Modifier.fillMaxWidth(0.7f),
                     buttonEnabled = {
 
@@ -223,7 +222,7 @@ fun LoginTextInputFields(
                 )
 
                 TextButton(
-                    onClick = { viewModel.onEvent(LoginUiEvent.Login) },
+                    onClick = { onClickToSignUp(Screen.SignUpAccount.route) },
                     modifier = Modifier.fillMaxWidth(),
                     contentPadding = PaddingValues(2.dp)
                 ) {
@@ -301,7 +300,9 @@ fun LoginTextInputFields(
                 }
 
                 AButton(text = stringResource(R.string.login),
-                    onClick = { onClickLoginButton(Screen.MainHome.route) },
+                    onClick = {
+                        viewModel.onEvent(LoginUiEvent.Login)
+                    },
                     modifier = Modifier.wrapContentSize(),
                     buttonEnabled = {
                         state.password.isNotBlank() && ((state.password.length >= 8) && state.email.isNotBlank() && Patterns.EMAIL_ADDRESS.matcher(

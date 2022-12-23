@@ -50,7 +50,7 @@ class AuthRepositoryImpl @Inject constructor(
 
     }
 
-    override  fun isCurrentUserExist(): Flow<Boolean> = flow {
+    override fun isCurrentUserExist(): Flow<Boolean> = flow {
         emit(firebaseAuth.currentUser != null)
     }
 

@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import com.wantech.gdsc_msu.feature_main.events.presentation.components.EventsScreen
 import com.wantech.gdsc_msu.feature_main.learnResources.presentation.components.LearningResourcesScreen
 import com.wantech.gdsc_msu.feature_main.news.presentation.components.NewsUpdatesScreen
-import com.wantech.gdsc_msu.feature_main.profile.presentation.components.ProfileScreen
+import com.wantech.gdsc_msu.feature_main.profile.presentation.ProfileScreen
 
 @Composable
 fun MainHomeScreenNavHost(navController:NavHostController) {
