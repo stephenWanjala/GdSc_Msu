@@ -25,13 +25,16 @@ import androidx.navigation.compose.rememberNavController
 import com.wantech.gdsc_msu.ui.theme.GdSc_MsuTheme
 import com.wantech.gdsc_msu.util.MainHomeScreenNavHost
 import com.wantech.gdsc_msu.util.Screen
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class MainHomeScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            GdSc_MsuTheme {
+
+            GdSc_MsuTheme() {
 
 
                 val navController = rememberNavController()

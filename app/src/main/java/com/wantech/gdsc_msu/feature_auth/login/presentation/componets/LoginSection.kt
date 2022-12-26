@@ -20,6 +20,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.google.firebase.auth.AuthResult
 import com.wantech.gdsc_msu.R
 import com.wantech.gdsc_msu.core.presentation.LoadingDialog
 import com.wantech.gdsc_msu.feature_auth.login.presentation.LoginState
@@ -79,6 +80,9 @@ fun LoginSection(
                             onClickLoginButton = { route ->
 //                                onNavigate(route)
                                 viewModel.onEvent(LoginUiEvent.Login)
+                                checkStatus(loginState.value.login){
+                                    onNavigate(route)
+                                }
 
                             },
                             onClickToSignUp = { route ->
@@ -108,7 +112,7 @@ fun LoginSection(
         }
 
     }
-    LaunchedEffect(Unit) {
+    LaunchedEffect(true) {
         if (loginState.value.login != null) {
             snackbarHostState.showSnackbar(
                 message = "welcome ${loginState.value.login!!.user?.email}"
@@ -210,7 +214,10 @@ fun LoginTextInputFields(
                 }
 
                 AButton(text = stringResource(id = R.string.login),
-                    onClick = { viewModel.onEvent(LoginUiEvent.Login) },
+                    onClick = {
+                        onClickLoginButton(Screen.MainHome.route)
+
+                    },
                     modifier = Modifier.fillMaxWidth(0.7f),
                     buttonEnabled = {
 
@@ -301,7 +308,7 @@ fun LoginTextInputFields(
 
                 AButton(text = stringResource(R.string.login),
                     onClick = {
-                        viewModel.onEvent(LoginUiEvent.Login)
+                        onClickLoginButton(Screen.MainHome.route)
                     },
                     modifier = Modifier.wrapContentSize(),
                     buttonEnabled = {
@@ -335,11 +342,16 @@ fun LoginTextInputFields(
 
     }
 
-
 }
 
 
-
+fun checkStatus(authResult: AuthResult?,onNavigate: (String) -> Unit){
+    if (authResult != null) {
+        if (authResult.user !=null){
+            onNavigate
+        }
+    }
+}
 
 
 
