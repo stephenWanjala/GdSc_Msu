@@ -1,8 +1,12 @@
 package com.wantech.gdsc_msu.feature_main.presentation
 
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager.*
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,11 +34,33 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainHomeScreen : ComponentActivity() {
+    private lateinit var packageInfo: PackageInfo
+    private lateinit var appVersionName: String
+
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            try {
 
-            GdSc_MsuTheme() {
+                packageInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+
+                    packageManager.getPackageInfo(
+                        packageName, PackageInfoFlags.of(0)
+                    )
+                } else {
+                    packageManager.getPackageInfo(
+                        packageName, 0
+                    )
+                }
+
+
+            } catch (_: NameNotFoundException) {
+
+            }
+            appVersionName = packageInfo.versionName
+
+            GdSc_MsuTheme {
 
 
                 val navController = rememberNavController()
@@ -57,11 +83,9 @@ class MainHomeScreen : ComponentActivity() {
                 )
 
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
-                    Scaffold(
-                        modifier = Modifier.fillMaxSize(),
+                    Scaffold(modifier = Modifier.fillMaxSize(),
                         scaffoldState = scaffoldState,
                         bottomBar = {
                             if (showBottomBar) {
@@ -76,44 +100,42 @@ class MainHomeScreen : ComponentActivity() {
                                     bottomBarItems.forEach { item ->
                                         val selected =
                                             currentDestination?.route?.contains(item.destinationRoute) == true
-                                        BottomNavigationItem(
-                                            icon = {
-                                                Box(
-                                                    modifier = Modifier.fillMaxSize(.62F),
-                                                    contentAlignment = Alignment.Center
-                                                ) {
-                                                    if (selected) {
-                                                        Box(
-                                                            modifier = Modifier
-                                                                .padding(vertical = 4.dp)
-                                                                .clip(RoundedCornerShape(100))
-                                                                .background(
-                                                                    MaterialTheme.colors.primary.copy(
-                                                                        alpha = .12F
-                                                                    )
+                                        BottomNavigationItem(icon = {
+                                            Box(
+                                                modifier = Modifier.fillMaxSize(.62F),
+                                                contentAlignment = Alignment.Center
+                                            ) {
+                                                if (selected) {
+                                                    Box(
+                                                        modifier = Modifier
+                                                            .padding(vertical = 4.dp)
+                                                            .clip(RoundedCornerShape(100))
+                                                            .background(
+                                                                MaterialTheme.colors.primary.copy(
+                                                                    alpha = .12F
                                                                 )
-                                                                .padding(
-                                                                    horizontal = 20.dp,
-                                                                    vertical = 6.dp
-                                                                ),
-                                                            contentAlignment = Alignment.Center
-                                                        ) {
-                                                            Icon(
-                                                                modifier = Modifier,
-                                                                imageVector = item.icon,
-                                                                tint = MaterialTheme.colors.primary,
-                                                                contentDescription = "Nav icon"
                                                             )
-                                                        }
-                                                    } else {
+                                                            .padding(
+                                                                horizontal = 20.dp, vertical = 6.dp
+                                                            ),
+                                                        contentAlignment = Alignment.Center
+                                                    ) {
                                                         Icon(
+                                                            modifier = Modifier,
                                                             imageVector = item.icon,
                                                             tint = MaterialTheme.colors.primary,
-                                                            contentDescription = "Icon"
+                                                            contentDescription = "Nav icon"
                                                         )
                                                     }
+                                                } else {
+                                                    Icon(
+                                                        imageVector = item.icon,
+                                                        tint = MaterialTheme.colors.primary,
+                                                        contentDescription = "Icon"
+                                                    )
                                                 }
-                                            },
+                                            }
+                                        },
                                             label = {
                                                 Text(
                                                     text = item.title,
@@ -143,10 +165,11 @@ class MainHomeScreen : ComponentActivity() {
                                     }
                                 }
                             }
-                        }
-                    ) {
+                        }) {
                         val unUsedPadding = it.calculateTopPadding()
-                        MainHomeScreenNavHost(navController = navController)
+                        MainHomeScreenNavHost(
+                            navController = navController, appVersionName = appVersionName
+                        )
 
 
                     }

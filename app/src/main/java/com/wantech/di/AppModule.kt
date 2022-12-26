@@ -41,4 +41,6 @@ object AppModule {
     @Singleton
     fun provideLoginUseCase(repository: AuthRepository): LoginUseCase =
         LoginUseCase(repository)
+
+
 }

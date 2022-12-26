@@ -14,4 +14,6 @@
     <string name="create_Account">Create Account</string>
     <string name="already_have_Account">Already Have Account?</string>
     <string name="sign_in">Sign In</string>
+    <string name="gdsc_maseno">GDSC Maseno</string>
+    <string name="logout">Logout</string>
 </resources>

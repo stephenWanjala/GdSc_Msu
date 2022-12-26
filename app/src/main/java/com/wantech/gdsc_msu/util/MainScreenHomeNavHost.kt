@@ -10,7 +10,7 @@ import com.wantech.gdsc_msu.feature_main.news.presentation.components.NewsUpdate
 import com.wantech.gdsc_msu.feature_main.profile.presentation.ProfileScreen
 
 @Composable
-fun MainHomeScreenNavHost(navController:NavHostController) {
+fun MainHomeScreenNavHost(navController: NavHostController, appVersionName: String) {
     NavHost(navController = navController, startDestination = Screen.Events.route){
         composable(Screen.Events.route){
             EventsScreen()
@@ -19,7 +19,7 @@ fun MainHomeScreenNavHost(navController:NavHostController) {
             LearningResourcesScreen()
         }
         composable(Screen.Profile.route){
-            ProfileScreen()
+            ProfileScreen(appVersionName=appVersionName)
         }
         composable(Screen.NewsUpdates.route){
             NewsUpdatesScreen()
