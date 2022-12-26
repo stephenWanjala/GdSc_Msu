@@ -20,7 +20,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.google.firebase.auth.AuthResult
 import com.wantech.gdsc_msu.R
 import com.wantech.gdsc_msu.core.presentation.LoadingDialog
 import com.wantech.gdsc_msu.feature_auth.login.presentation.LoginState
@@ -78,11 +77,8 @@ fun LoginSection(
                     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                         LoginTextInputFields(
                             onClickLoginButton = { route ->
-//                                onNavigate(route)
+
                                 viewModel.onEvent(LoginUiEvent.Login)
-                                checkStatus(loginState.value.login){
-                                    onNavigate(route)
-                                }
 
                             },
                             onClickToSignUp = { route ->
@@ -103,22 +99,22 @@ fun LoginSection(
         }
     }
 
-    if (loginState.value.error != null) {
-        LaunchedEffect(true) {
+
+    LaunchedEffect(loginState.value) {
+        if (loginState.value.error != null) {
             snackbarHostState.showSnackbar(
                 message = loginState.value.error!!.asString(context = application),
                 actionLabel = "dismiss"
             )
         }
-
-    }
-    LaunchedEffect(true) {
         if (loginState.value.login != null) {
             snackbarHostState.showSnackbar(
-                message = "welcome ${loginState.value.login!!.user?.email}"
+                message = "welcome ${loginState.value.login!!.user?.email}",
+                duration = SnackbarDuration.Short
             )
             onNavigate(Screen.MainHome.route)
         }
+
     }
 
 }
@@ -345,13 +341,6 @@ fun LoginTextInputFields(
 }
 
 
-fun checkStatus(authResult: AuthResult?,onNavigate: (String) -> Unit){
-    if (authResult != null) {
-        if (authResult.user !=null){
-            onNavigate
-        }
-    }
-}
 
 
 

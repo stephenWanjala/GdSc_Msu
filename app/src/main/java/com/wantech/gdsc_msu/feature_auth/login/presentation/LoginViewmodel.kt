@@ -53,10 +53,16 @@ class LoginViewModel
                         _loginUIState.emit(
                             LoginState(login = result.data)
                         )
+                        _state.value=state.value.copy(
+                            email="", password=""
+                        )
                     }
                     is Resource.Error -> {
                         _loginUIState.emit(
                             LoginState(error = result.uiText)
+                        )
+                        _state.value=state.value.copy(
+                            email="", password=""
                         )
                     }
                     is Resource.Loading -> {

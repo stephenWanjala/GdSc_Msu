@@ -24,7 +24,7 @@ fun LoginScreen(
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     val isUserExist = viewModel.isCurrentUserExist.collectAsState(initial = true)
-    LaunchedEffect(Unit) {
+    LaunchedEffect(isUserExist.value) {
         if (isUserExist.value) {
             onNavigate(Screen.MainHome.route)
         }

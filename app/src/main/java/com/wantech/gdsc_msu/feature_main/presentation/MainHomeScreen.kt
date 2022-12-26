@@ -37,7 +37,7 @@ class MainHomeScreen : ComponentActivity() {
     private lateinit var packageInfo: PackageInfo
     private lateinit var appVersionName: String
 
-    @RequiresApi(Build.VERSION_CODES.P)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -116,7 +116,8 @@ class MainHomeScreen : ComponentActivity() {
                                                                 )
                                                             )
                                                             .padding(
-                                                                horizontal = 20.dp, vertical = 6.dp
+                                                                horizontal = 20.dp,
+                                                                vertical = 6.dp
                                                             ),
                                                         contentAlignment = Alignment.Center
                                                     ) {
