@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.wantech.gdsc_msu.feature_auth.sign_up.domain.usecase.SignUpUseCase
-import com.wantech.gdsc_msu.util.Resource
+import com.wantech.gdsc_msu.core.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow

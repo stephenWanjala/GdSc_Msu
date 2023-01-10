@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.wantech.gdsc_msu.core.util.Screen
 import com.wantech.gdsc_msu.feature_main.events.presentation.components.EventsScreen
 import com.wantech.gdsc_msu.feature_main.learnResources.presentation.components.LearningResourcesScreen
 import com.wantech.gdsc_msu.feature_main.news.presentation.components.NewsUpdatesScreen

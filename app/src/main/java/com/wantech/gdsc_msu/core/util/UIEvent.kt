@@ -1,4 +1,4 @@
-package com.wantech.gdsc_msu.util
+package com.wantech.gdsc_msu.core.util
 
 sealed class UiEvent : Event() {
     data class ShowSnackbar(val uiText: UiText) : UiEvent()

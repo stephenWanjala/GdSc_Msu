@@ -1,4 +1,4 @@
-package com.wantech.gdsc_msu.feature_auth.login.presentation.componets
+package com.wantech.gdsc_msu.core.presentation
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth

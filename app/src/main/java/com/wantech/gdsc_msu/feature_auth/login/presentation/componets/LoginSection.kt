@@ -21,14 +21,15 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.wantech.gdsc_msu.R
+import com.wantech.gdsc_msu.core.presentation.AButton
 import com.wantech.gdsc_msu.core.presentation.LoadingDialog
 import com.wantech.gdsc_msu.feature_auth.login.presentation.LoginState
 import com.wantech.gdsc_msu.feature_auth.login.presentation.LoginUiEvent
 import com.wantech.gdsc_msu.feature_auth.login.presentation.LoginViewModel
 import com.wantech.gdsc_msu.ui.theme.SurfaceVariantDark
 import com.wantech.gdsc_msu.ui.theme.SurfaceVariantLight
-import com.wantech.gdsc_msu.util.Screen
-import com.wantech.gdsc_msu.util.asString
+import com.wantech.gdsc_msu.core.util.Screen
+import com.wantech.gdsc_msu.core.util.asString
 
 
 @Composable

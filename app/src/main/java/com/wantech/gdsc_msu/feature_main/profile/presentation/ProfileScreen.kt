@@ -18,7 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.wantech.gdsc_msu.AuthActivity
 import com.wantech.gdsc_msu.R
 import com.wantech.gdsc_msu.feature_auth.login.presentation.LoginViewModel
-import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.AButton
+import com.wantech.gdsc_msu.core.presentation.AButton
 import com.wantech.gdsc_msu.feature_main.profile.domain.model.ProfileItemModel
 import com.wantech.gdsc_msu.feature_main.profile.domain.model.UserProfile
 import com.wantech.gdsc_msu.feature_main.profile.presentation.components.ProfileHeader

@@ -9,9 +9,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import com.wantech.gdsc_msu.feature_main.presentation.MainHomeScreen
+import com.wantech.gdsc_msu.feature_main.presentation.HomeActivity
 import com.wantech.gdsc_msu.ui.theme.GdSc_MsuTheme
-import com.wantech.gdsc_msu.util.NavigationHost
+import com.wantech.gdsc_msu.util.AuthNavHost
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,8 +26,8 @@ class AuthActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     val navController = rememberNavController()
-                    NavigationHost(navHostController = navController, onNavigate = {
-                        val intent = Intent(this, MainHomeScreen::class.java)
+                    AuthNavHost(navHostController = navController, onNavigate = {
+                        val intent = Intent(this, HomeActivity::class.java)
                         startActivity(intent)
                         finish()
                     })
