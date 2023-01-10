@@ -44,13 +44,20 @@ fun ProfileScreen(appVersionName: String) {
                     itemName = "Google Leads"
                 ),
                 ProfileItemModel(
+                    icon = Icons.Default.Nightlight,
+                    itemName = "Change Your Theme"
+                ),
+
+                ProfileItemModel(
                     icon = Icons.Default.Info,
                     itemName = "App Version $appVersionName"
                 )
             )
-            LazyColumn(modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 64.dp)) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 64.dp)
+            ) {
                 item {
                     ProfileHeader(
                         userProfile = UserProfile(email = "stephenwanjala145@gmail.com")

@@ -20,7 +20,6 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-
     override suspend fun signUpWithEmailAndPassword(
         email: String,
         password: String
@@ -64,4 +63,5 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun signOut() = firebaseAuth.signOut()
+
 }
