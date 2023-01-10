@@ -10,7 +10,7 @@ import com.wantech.gdsc_msu.feature_auth.sign_up.presentation.componets.SignUpSc
 import com.wantech.gdsc_msu.feature_main.presentation.MainHomeScreen
 
 @Composable
-fun NavigationHost(navHostController: NavHostController) {
+fun NavigationHost(navHostController: NavHostController, onNavigate: () -> Unit) {
     NavHost(
         navController = navHostController,
         startDestination = Screen.LoginAccountScreen.route,
@@ -18,9 +18,9 @@ fun NavigationHost(navHostController: NavHostController) {
         ) {
         composable(Screen.LoginAccountScreen.route) {
             LoginScreen(
-                onNavigate = navHostController::navigate,
-                onNavigateToSignUpScreen = {
-                    navHostController.navigate(Screen.SignUpAccount.route) {
+                onNavigate = { onNavigate() },
+                onNavigateToSignUpScreen = { route ->
+                    navHostController.navigate(route) {
                         popUpTo(Screen.LoginAccountScreen.route) {
                             inclusive = true
                         }
@@ -33,14 +33,15 @@ fun NavigationHost(navHostController: NavHostController) {
         composable(Screen.SignUpAccount.route) {
 
             SignUpScreen(
-                onNavigateToLogin = navHostController::navigate,
-                onNavigate = { route ->
+                onNavigateToLogin = { route ->
                     navHostController.navigate(route) {
-                        popUpTo(Screen.LoginAccountScreen.route) {
+                        popUpTo(Screen.SignUpAccount.route) {
                             inclusive = true
                         }
-
                     }
+                },
+                onNavigate = {
+                    onNavigate()
                 },
                 popBackStack = {
                     navHostController.popBackStack(Screen.SignUpAccount.route, true)
@@ -48,9 +49,9 @@ fun NavigationHost(navHostController: NavHostController) {
             )
 
         }
-        activity(route = "mainHome") {
-            this.activityClass = MainHomeScreen::class
-        }
+//        activity(route = "mainHome") {
+//            this.activityClass = MainHomeScreen::class
+//        }
     }
 
 }

@@ -33,7 +33,7 @@ import com.wantech.gdsc_msu.util.asString
 
 @Composable
 fun LoginSection(
-    onNavigate: (String) -> Unit,
+    onNavigate: () -> Unit,
     viewModel: LoginViewModel,
     onNavigateToSignUpScreen: (String) -> Unit,
     application: Application = LocalContext.current.applicationContext as Application
@@ -76,8 +76,7 @@ fun LoginSection(
                 ) {
                     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                         LoginTextInputFields(
-                            onClickLoginButton = { route ->
-
+                            onClickLoginButton = {
                                 viewModel.onEvent(LoginUiEvent.Login)
 
                             },
@@ -112,7 +111,7 @@ fun LoginSection(
                 message = "welcome ${loginState.value.login!!.user?.email}",
                 duration = SnackbarDuration.Short
             )
-            onNavigate(Screen.MainHome.route)
+            onNavigate()
         }
 
     }
@@ -122,7 +121,7 @@ fun LoginSection(
 
 @Composable
 fun LoginTextInputFields(
-    onClickLoginButton: (String) -> Unit,
+    onClickLoginButton: () -> Unit,
     onClickToSignUp: (String) -> Unit,
     onForgetPassword: () -> Unit,
     viewModel: LoginViewModel
@@ -211,7 +210,7 @@ fun LoginTextInputFields(
 
                 AButton(text = stringResource(id = R.string.login),
                     onClick = {
-                        onClickLoginButton(Screen.MainHome.route)
+                        onClickLoginButton()
 
                     },
                     modifier = Modifier.fillMaxWidth(0.7f),
@@ -304,7 +303,7 @@ fun LoginTextInputFields(
 
                 AButton(text = stringResource(R.string.login),
                     onClick = {
-                        onClickLoginButton(Screen.MainHome.route)
+                        onClickLoginButton()
                     },
                     modifier = Modifier.wrapContentSize(),
                     buttonEnabled = {

@@ -14,7 +14,7 @@
         android:theme="@style/Theme.GdSc_Msu"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".AuthActivity"
             android:exported="true"
             android:theme="@style/Theme.GdSc_Msu">
             <intent-filter>

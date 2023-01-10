@@ -1,12 +1,14 @@
 package com.wantech.gdsc_msu.feature_main.presentation
 
+import android.content.Intent
 import android.content.pm.PackageInfo
-import android.content.pm.PackageManager.*
+import android.content.pm.PackageManager.NameNotFoundException
+import android.content.pm.PackageManager.PackageInfoFlags
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.annotation.RequiresApi
+import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,22 +16,28 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.wantech.gdsc_msu.AuthActivity
+import com.wantech.gdsc_msu.feature_auth.login.presentation.LoginViewModel
 import com.wantech.gdsc_msu.ui.theme.GdSc_MsuTheme
 import com.wantech.gdsc_msu.util.MainHomeScreenNavHost
 import com.wantech.gdsc_msu.util.Screen
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -37,6 +45,8 @@ class MainHomeScreen : ComponentActivity() {
     private lateinit var packageInfo: PackageInfo
     private lateinit var appVersionName: String
 
+
+    private val viewModel: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +69,8 @@ class MainHomeScreen : ComponentActivity() {
 
             }
             appVersionName = packageInfo.versionName
+
+
 
             GdSc_MsuTheme {
 
@@ -168,6 +180,25 @@ class MainHomeScreen : ComponentActivity() {
                             }
                         }) {
                         val unUsedPadding = it.calculateTopPadding()
+
+//                        LaunchedEffect(key1 = true) {
+//
+//                            viewModel.isCurrentUserExist.collectLatest { isUserExist ->
+//                                if (!isUserExist) {
+//                                    withContext(Dispatchers.Main) {
+//                                        startActivity(
+//                                            Intent(
+//                                                this@MainHomeScreen,
+//                                                AuthActivity::class.java
+//                                            )
+//                                        )
+//                                        finish()
+//
+//                                    }
+//                                }
+//                            }
+//                        }
+
                         MainHomeScreenNavHost(
                             navController = navController, appVersionName = appVersionName
                         )

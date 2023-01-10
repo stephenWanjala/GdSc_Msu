@@ -15,18 +15,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.wantech.gdsc_msu.feature_auth.login.presentation.LoginViewModel
-import com.wantech.gdsc_msu.util.Screen
 
 @Composable
 fun LoginScreen(
-    onNavigate: (String) -> Unit,
+    onNavigate: () -> Unit,
     onNavigateToSignUpScreen: (String) -> Unit,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     val isUserExist = viewModel.isCurrentUserExist.collectAsState(initial = true)
     LaunchedEffect(isUserExist.value) {
         if (isUserExist.value) {
-            onNavigate(Screen.MainHome.route)
+            onNavigate()
         }
     }
 
@@ -49,7 +48,7 @@ fun LoginScreen(
 //            verticalArrangement = Arrangement.Center
             ) {
                 LoginSection(
-                    onNavigate = onNavigate,
+                    onNavigate = { onNavigate() },
                     onNavigateToSignUpScreen = onNavigateToSignUpScreen,
                     viewModel = viewModel
                 )

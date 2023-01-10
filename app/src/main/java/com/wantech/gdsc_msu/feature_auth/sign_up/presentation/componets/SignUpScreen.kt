@@ -4,14 +4,14 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun SignUpScreen(
-    onNavigate: (String) -> Unit,
+    onNavigate: () -> Unit,
     onNavigateToLogin: (String) -> Unit,
     popBackStack: () -> Unit
 ) {
 
     SignUpSection(
-        onNavigate = onNavigate,
-        onNavigateToLogin = onNavigateToLogin,
+        onNavigate = { onNavigate() },
+        onNavigateToLoginScreen = onNavigateToLogin,
         popBackStack
         = popBackStack
     )

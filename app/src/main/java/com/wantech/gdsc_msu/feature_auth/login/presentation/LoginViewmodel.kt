@@ -1,12 +1,12 @@
 package com.wantech.gdsc_msu.feature_auth.login.presentation
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.wantech.gdsc_msu.core.data.repository.AuthRepository
 import com.wantech.gdsc_msu.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -53,16 +53,16 @@ class LoginViewModel
                         _loginUIState.emit(
                             LoginState(login = result.data)
                         )
-                        _state.value=state.value.copy(
-                            email="", password=""
+                        _state.value = state.value.copy(
+                            email = "", password = ""
                         )
                     }
                     is Resource.Error -> {
                         _loginUIState.emit(
                             LoginState(error = result.uiText)
                         )
-                        _state.value=state.value.copy(
-                            email="", password=""
+                        _state.value = state.value.copy(
+                            email = "", password = ""
                         )
                     }
                     is Resource.Loading -> {
@@ -79,4 +79,22 @@ class LoginViewModel
         get() {
             return authRepository.isCurrentUserExist()
         }
+
+    fun getUserEmail(): String {
+        var email: String by mutableStateOf("")
+        viewModelScope.launch {
+            authRepository.getCurrentUserEmail().collect {
+                email = it
+            }
+        }
+        return email
+    }
+
+
+
+fun signOut() {
+    viewModelScope.launch(Dispatchers.IO) {
+        authRepository.signOut()
+    }
+}
 }

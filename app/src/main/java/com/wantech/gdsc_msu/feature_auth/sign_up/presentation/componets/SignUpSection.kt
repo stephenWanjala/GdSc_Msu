@@ -40,8 +40,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun SignUpSection(
     viewModel: SignUpViewModel = hiltViewModel(),
-    onNavigate: (String) -> Unit,
-    onNavigateToLogin: (String) -> Unit,
+    onNavigate: () -> Unit,
+    onNavigateToLoginScreen: (String) -> Unit,
     application: Application = LocalContext.current.applicationContext as Application,
     popBackStack: () -> Unit
 ) {
@@ -81,7 +81,7 @@ fun SignUpSection(
                         LoginTextInputFields(
                             onClickLoginButton = { route ->
 
-                                onNavigateToLogin(route)
+                                onNavigateToLoginScreen(route)
 
                             },
                             onClickToSignUp = {
@@ -112,7 +112,7 @@ fun SignUpSection(
     }
 
     if (signUpUiState.value.signUp != null) {
-        onNavigate(Screen.MainHome.route)
+        onNavigate()
         popBackStack()
     }
 
@@ -121,7 +121,7 @@ fun SignUpSection(
 
 @Composable
 fun LoginTextInputFields(
-    onClickLoginButton: (String) -> Unit, onClickToSignUp: (String) -> Unit,
+    onClickLoginButton: (String) -> Unit, onClickToSignUp: () -> Unit,
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
@@ -195,7 +195,7 @@ fun LoginTextInputFields(
 
 
                 AButton(text = stringResource(id = R.string.sign_up),
-                    onClick = { onClickToSignUp(Screen.MainHome.route) },
+                    onClick = { onClickToSignUp() },
                     modifier = Modifier.fillMaxWidth(0.7f),
                     buttonEnabled = {
                         state.email.isNotBlank() && state.password.isNotBlank() &&
@@ -274,7 +274,7 @@ fun LoginTextInputFields(
                 )
 
                 AButton(text = stringResource(id = R.string.sign_up),
-                    onClick = { onClickToSignUp(Screen.MainHome.route) },
+                    onClick = { onClickToSignUp() },
                     modifier = Modifier.wrapContentSize(),
                     buttonEnabled = {
                         state.email.isNotBlank() && state.password.isNotBlank() &&
