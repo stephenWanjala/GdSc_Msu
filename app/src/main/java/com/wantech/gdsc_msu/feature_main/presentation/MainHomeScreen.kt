@@ -1,8 +1,14 @@
 package com.wantech.gdsc_msu.feature_main.presentation
 
+import android.content.Intent
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager.NameNotFoundException
+import android.content.pm.PackageManager.PackageInfoFlags
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,24 +20,59 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.wantech.gdsc_msu.AuthActivity
+import com.wantech.gdsc_msu.feature_auth.login.presentation.LoginViewModel
 import com.wantech.gdsc_msu.ui.theme.GdSc_MsuTheme
 import com.wantech.gdsc_msu.util.MainHomeScreenNavHost
-import com.wantech.gdsc_msu.util.NavigationHost
 import com.wantech.gdsc_msu.util.Screen
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 
-class MainHomeScreen: ComponentActivity() {
+@AndroidEntryPoint
+class MainHomeScreen : ComponentActivity() {
+    private lateinit var packageInfo: PackageInfo
+    private lateinit var appVersionName: String
+
+
+    private val viewModel: LoginViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            GdSc_MsuTheme() {
+            try {
+
+                packageInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+
+                    packageManager.getPackageInfo(
+                        packageName, PackageInfoFlags.of(0)
+                    )
+                } else {
+                    packageManager.getPackageInfo(
+                        packageName, 0
+                    )
+                }
+
+
+            } catch (_: NameNotFoundException) {
+
+            }
+            appVersionName = packageInfo.versionName
+
+
+
+            GdSc_MsuTheme {
 
 
                 val navController = rememberNavController()
@@ -54,11 +95,9 @@ class MainHomeScreen: ComponentActivity() {
                 )
 
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
-                    Scaffold(
-                        modifier = Modifier.fillMaxSize(),
+                    Scaffold(modifier = Modifier.fillMaxSize(),
                         scaffoldState = scaffoldState,
                         bottomBar = {
                             if (showBottomBar) {
@@ -73,44 +112,43 @@ class MainHomeScreen: ComponentActivity() {
                                     bottomBarItems.forEach { item ->
                                         val selected =
                                             currentDestination?.route?.contains(item.destinationRoute) == true
-                                        BottomNavigationItem(
-                                            icon = {
-                                                Box(
-                                                    modifier = Modifier.fillMaxSize(.62F),
-                                                    contentAlignment = Alignment.Center
-                                                ) {
-                                                    if (selected) {
-                                                        Box(
-                                                            modifier = Modifier
-                                                                .padding(vertical = 4.dp)
-                                                                .clip(RoundedCornerShape(100))
-                                                                .background(
-                                                                    MaterialTheme.colors.primary.copy(
-                                                                        alpha = .12F
-                                                                    )
+                                        BottomNavigationItem(icon = {
+                                            Box(
+                                                modifier = Modifier.fillMaxSize(.62F),
+                                                contentAlignment = Alignment.Center
+                                            ) {
+                                                if (selected) {
+                                                    Box(
+                                                        modifier = Modifier
+                                                            .padding(vertical = 4.dp)
+                                                            .clip(RoundedCornerShape(100))
+                                                            .background(
+                                                                MaterialTheme.colors.primary.copy(
+                                                                    alpha = .12F
                                                                 )
-                                                                .padding(
-                                                                    horizontal = 20.dp,
-                                                                    vertical = 6.dp
-                                                                ),
-                                                            contentAlignment = Alignment.Center
-                                                        ) {
-                                                            Icon(
-                                                                modifier = Modifier,
-                                                                imageVector = item.icon,
-                                                                tint = MaterialTheme.colors.primary,
-                                                                contentDescription = "Nav icon"
                                                             )
-                                                        }
-                                                    } else {
+                                                            .padding(
+                                                                horizontal = 20.dp,
+                                                                vertical = 6.dp
+                                                            ),
+                                                        contentAlignment = Alignment.Center
+                                                    ) {
                                                         Icon(
+                                                            modifier = Modifier,
                                                             imageVector = item.icon,
                                                             tint = MaterialTheme.colors.primary,
-                                                            contentDescription = "Icon"
+                                                            contentDescription = "Nav icon"
                                                         )
                                                     }
+                                                } else {
+                                                    Icon(
+                                                        imageVector = item.icon,
+                                                        tint = MaterialTheme.colors.primary,
+                                                        contentDescription = "Icon"
+                                                    )
                                                 }
-                                            },
+                                            }
+                                        },
                                             label = {
                                                 Text(
                                                     text = item.title,
@@ -140,10 +178,12 @@ class MainHomeScreen: ComponentActivity() {
                                     }
                                 }
                             }
-                        }
-                    ) {
+                        }) {
                         val unUsedPadding = it.calculateTopPadding()
-                        MainHomeScreenNavHost(navController = navController)
+
+                        MainHomeScreenNavHost(
+                            navController = navController, appVersionName = appVersionName
+                        )
 
 
                     }

@@ -3,4 +3,17 @@
     <string name="university_name">Maseno University</string>
     <string name="club_name">Google developer Student Clubs</string>
     <string name="title_activity_main_screen">MainScreenActivity</string>
+    <string name="error_unknown">unknown Error</string>
+    <string name="error_couldnt_reach_server">oops could not reach the server</string>
+    <string name="network_error">network error check connection</string>
+    <string name="success_registration">Succesfully Registered An acount,You can login</string>
+    <string name="dont_Have_account">Don\'t Have Account?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="login">Login</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="create_Account">Create Account</string>
+    <string name="already_have_Account">Already Have Account?</string>
+    <string name="sign_in">Sign In</string>
+    <string name="gdsc_maseno">GDSC Maseno</string>
+    <string name="logout">Logout</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.wantech.gdsc_msu
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -8,13 +9,13 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
+import com.wantech.gdsc_msu.feature_main.presentation.MainHomeScreen
 import com.wantech.gdsc_msu.ui.theme.GdSc_MsuTheme
 import com.wantech.gdsc_msu.util.NavigationHost
-import dagger.hilt.EntryPoint
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class AuthActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -25,7 +26,11 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     val navController = rememberNavController()
-                    NavigationHost(navHostController = navController)
+                    NavigationHost(navHostController = navController, onNavigate = {
+                        val intent = Intent(this, MainHomeScreen::class.java)
+                        startActivity(intent)
+                        finish()
+                    })
                 }
             }
         }

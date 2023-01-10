@@ -1,5 +1,8 @@
 package com.wantech.gdsc_msu.feature_auth.sign_up.presentation
 
+import com.google.firebase.auth.AuthResult
+import com.wantech.gdsc_msu.util.UiText
+
 data class SignUpUIState(
     val userName: String = "",
     val email: String = "",
@@ -25,4 +28,11 @@ data class SignUpUIState(
         object InputTooShort : PasswordError()
     }
 
+
 }
+
+data class SignUpState(
+    val isLoading: Boolean = false,
+    val signUp: AuthResult?= null,
+    val error: UiText? = null
+)

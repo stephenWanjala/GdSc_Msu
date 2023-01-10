@@ -7,10 +7,10 @@ import androidx.navigation.compose.composable
 import com.wantech.gdsc_msu.feature_main.events.presentation.components.EventsScreen
 import com.wantech.gdsc_msu.feature_main.learnResources.presentation.components.LearningResourcesScreen
 import com.wantech.gdsc_msu.feature_main.news.presentation.components.NewsUpdatesScreen
-import com.wantech.gdsc_msu.feature_main.profile.presentation.components.ProfileScreen
+import com.wantech.gdsc_msu.feature_main.profile.presentation.ProfileScreen
 
 @Composable
-fun MainHomeScreenNavHost(navController:NavHostController) {
+fun MainHomeScreenNavHost(navController: NavHostController, appVersionName: String) {
     NavHost(navController = navController, startDestination = Screen.Events.route){
         composable(Screen.Events.route){
             EventsScreen()
@@ -19,7 +19,7 @@ fun MainHomeScreenNavHost(navController:NavHostController) {
             LearningResourcesScreen()
         }
         composable(Screen.Profile.route){
-            ProfileScreen()
+            ProfileScreen(appVersionName=appVersionName)
         }
         composable(Screen.NewsUpdates.route){
             NewsUpdatesScreen()

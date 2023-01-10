@@ -1,12 +1,11 @@
 package com.wantech.gdsc_msu.feature_auth.login.domain.usecase
 
-import com.wantech.gdsc_msu.feature_auth.login.data.repository.LoginUserRepository
+import com.wantech.gdsc_msu.core.data.repository.AuthRepository
 import javax.inject.Inject
 
 class LoginUseCase @Inject constructor(
-    private val loginUserRepository: LoginUserRepository
+    private val authRepository: AuthRepository
 ) {
-    suspend operator fun invoke(email: String, password: String): Boolean {
-        return loginUserRepository.loginUser(email, password)
-    }
+    suspend operator fun invoke(email: String, password: String) =
+        authRepository.signInWithEmailAndPassword(email.trim(), password.trim())
 }
