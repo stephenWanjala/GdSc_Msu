@@ -181,8 +181,6 @@ class MainHomeScreen : ComponentActivity() {
                         }) {
                         val unUsedPadding = it.calculateTopPadding()
 
-
-
                         MainHomeScreenNavHost(
                             navController = navController, appVersionName = appVersionName
                         )
