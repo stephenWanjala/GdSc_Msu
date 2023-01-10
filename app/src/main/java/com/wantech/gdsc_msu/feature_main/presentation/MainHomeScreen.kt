@@ -181,23 +181,7 @@ class MainHomeScreen : ComponentActivity() {
                         }) {
                         val unUsedPadding = it.calculateTopPadding()
 
-//                        LaunchedEffect(key1 = true) {
-//
-//                            viewModel.isCurrentUserExist.collectLatest { isUserExist ->
-//                                if (!isUserExist) {
-//                                    withContext(Dispatchers.Main) {
-//                                        startActivity(
-//                                            Intent(
-//                                                this@MainHomeScreen,
-//                                                AuthActivity::class.java
-//                                            )
-//                                        )
-//                                        finish()
-//
-//                                    }
-//                                }
-//                            }
-//                        }
+
 
                         MainHomeScreenNavHost(
                             navController = navController, appVersionName = appVersionName
