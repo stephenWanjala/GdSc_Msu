@@ -25,7 +25,7 @@ fun ThemeDialog(
     onSelectTheme: (Int) -> Unit
 ) {
     AlertDialog(
-        onDismissRequest = { onDismiss },
+        onDismissRequest = { onDismiss() },
         shape = RoundedCornerShape(20.dp),
         title = {
             Text(text = "Themes", style = MaterialTheme.typography.h2)
