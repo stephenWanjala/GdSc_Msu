@@ -1,32 +1,40 @@
 package com.wantech.gdsc_msu.feature_main.profile.presentation
 
 import android.content.Intent
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.wantech.gdsc_msu.AuthActivity
 import com.wantech.gdsc_msu.R
-import com.wantech.gdsc_msu.feature_auth.login.presentation.LoginViewModel
 import com.wantech.gdsc_msu.core.presentation.AButton
+import com.wantech.gdsc_msu.feature_auth.login.presentation.LoginViewModel
 import com.wantech.gdsc_msu.feature_main.profile.domain.model.ProfileItemModel
 import com.wantech.gdsc_msu.feature_main.profile.domain.model.UserProfile
 import com.wantech.gdsc_msu.feature_main.profile.presentation.components.ProfileHeader
 import com.wantech.gdsc_msu.feature_main.profile.presentation.components.ProfileItem
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun ProfileScreen(appVersionName: String, viewModel: LoginViewModel = hiltViewModel()) {
     val context = LocalContext.current
+    val configuration = LocalConfiguration.current
+    var orientation = configuration.orientation
+    LaunchedEffect(key1 = orientation) {
+        snapshotFlow { configuration.orientation }.collectLatest { orientation = it }
+    }
 
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
         Scaffold(modifier = Modifier.fillMaxSize()) {
@@ -61,7 +69,9 @@ fun ProfileScreen(appVersionName: String, viewModel: LoginViewModel = hiltViewMo
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 64.dp)
+                    .padding(bottom = 64.dp),
+                horizontalAlignment = if (orientation == Configuration.ORIENTATION_LANDSCAPE) Alignment.CenterHorizontally else Alignment.Start,
+                verticalArrangement = Arrangement.Center
             ) {
                 item {
                     ProfileHeader(
@@ -75,15 +85,40 @@ fun ProfileScreen(appVersionName: String, viewModel: LoginViewModel = hiltViewMo
                     )
                 }
                 items(profileItems.size) { index: Int ->
+                    if (index != (profileItems.lastIndex - 1)) Divider()
                     ProfileItem(
                         profileItemModel = profileItems[index],
-                        onclickProfileItem = { profileItems[index] }
+                        onclickProfileItem = { profileItem->
+                            when (index) {
+                                0 -> {
+
+                                }
+                                1 -> {
+
+                                }
+                                2 -> {
+
+                                }
+                                3 -> {
+
+                                }
+                                4 -> {
+
+                                }
+                                5 -> {
+
+                                }
+                            }
+
+                        }
                     )
+
 
                 }
 
+
                 item {
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
                     AButton(
                         text = stringResource(R.string.logout),
                         onClick = {
@@ -97,10 +132,14 @@ fun ProfileScreen(appVersionName: String, viewModel: LoginViewModel = hiltViewMo
                                         Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                                 })
                         },
-                        modifier = Modifier,
+                        modifier = if (orientation == Configuration.ORIENTATION_PORTRAIT) Modifier else Modifier.fillMaxWidth(
+                            0.5f
+                        ),
                         buttonEnabled = { true },
                         trailingIcon = Icons.Default.Logout
                     )
+
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
             }
         }
