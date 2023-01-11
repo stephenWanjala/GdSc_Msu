@@ -68,5 +68,5 @@ fun GdSc_MsuTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composab
 enum class Theme(val themeValue: Int) {
     FOLLOW_SYSTEM(themeValue = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM),
     LIGHT_THEME(themeValue = AppCompatDelegate.MODE_NIGHT_NO),
-    NIGHT_THEM(themeValue = AppCompatDelegate.MODE_NIGHT_YES)
+    NIGHT_THEME(themeValue = AppCompatDelegate.MODE_NIGHT_YES)
 }
