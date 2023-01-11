@@ -3,8 +3,9 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'com.google.devtools.ksp' version '1.7.10-1.0.6'
     id 'com.google.gms.google-services'
-    id 'com.google.devtools.ksp' version '1.7.21-1.0.8'
+
 }
 
 android {
@@ -52,7 +53,7 @@ android {
 
 dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx:21.1.0'
-    implementation 'com.google.firebase:firebase-firestore-ktx:24.4.1'
+//    implementation 'com.google.firebase:firebase-firestore-ktx:24.4.1'
     implementation 'androidx.appcompat:appcompat:1.5.1'
     def lifecycle_version = "2.5.1"
     def nav_version = "2.5.3"
@@ -95,10 +96,10 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.2.2")
     implementation "com.google.accompanist:accompanist-swiperefresh:0.28.0"
 
-    //compose destinations
-    implementation "io.github.raamcosta.compose-destinations:animations-core:$destinations_version"
-    ksp "io.github.raamcosta.compose-destinations: $destinations_version"
-    implementation "io.github.raamcosta.compose-destinations:animations-core:$destinations_version"
+    // RamCosta Navigation
+    implementation("io.github.raamcosta.compose-destinations:animations-core:1.7.27-beta")
+    ksp("io.github.raamcosta.compose-destinations:ksp:1.7.27-beta")
+
     implementation("androidx.datastore:datastore-preferences:1.0.0")
     implementation "com.google.accompanist:accompanist-pager:0.28.0"
 

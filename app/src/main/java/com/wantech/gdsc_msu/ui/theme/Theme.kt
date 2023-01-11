@@ -42,11 +42,18 @@ private val LightColorPalette = lightColors(
 )
 
 @Composable
-fun GdSc_MsuTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
-    val colors = if (darkTheme) {
-        DarkColorPalette
-    } else {
-        LightColorPalette
+fun GdSc_MsuTheme(
+    theme: Int,
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit,
+) {
+    val autoColors = if (isSystemInDarkTheme()) DarkColorPalette else LightColorPalette
+
+
+    val colors = when (theme) {
+        Theme.LIGHT_THEME.themeValue -> LightColorPalette
+        Theme.NIGHT_THEME.themeValue -> DarkColorPalette
+        else -> autoColors
     }
     val view = LocalView.current
     if (!view.isInEditMode) {
@@ -68,5 +75,5 @@ fun GdSc_MsuTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composab
 enum class Theme(val themeValue: Int) {
     FOLLOW_SYSTEM(themeValue = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM),
     LIGHT_THEME(themeValue = AppCompatDelegate.MODE_NIGHT_NO),
-    NIGHT_THEME(themeValue = AppCompatDelegate.MODE_NIGHT_YES)
+    NIGHT_THEME(themeValue = AppCompatDelegate.MODE_NIGHT_YES);
 }

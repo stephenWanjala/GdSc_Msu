@@ -15,10 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,8 +27,10 @@ import androidx.navigation.compose.rememberNavController
 import com.wantech.gdsc_msu.core.util.Screen
 import com.wantech.gdsc_msu.feature_auth.login.presentation.LoginViewModel
 import com.wantech.gdsc_msu.ui.theme.GdSc_MsuTheme
+import com.wantech.gdsc_msu.ui.theme.Theme
 import com.wantech.gdsc_msu.util.MainHomeScreenNavHost
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 
 
 @AndroidEntryPoint
@@ -39,12 +38,15 @@ class HomeActivity : ComponentActivity() {
     private lateinit var packageInfo: PackageInfo
     private lateinit var appVersionName: String
 
-
     private val viewModel: LoginViewModel by viewModels()
-
+    private val mVieModel: MainVieModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val themeValue = mVieModel.theme.collectAsState(
+                initial = Theme.FOLLOW_SYSTEM.themeValue,
+                context = Dispatchers.Main.immediate
+            )
             try {
 
                 packageInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -66,7 +68,7 @@ class HomeActivity : ComponentActivity() {
 
 
 
-            GdSc_MsuTheme {
+            GdSc_MsuTheme(theme = themeValue.value) {
 
 
                 val navController = rememberNavController()

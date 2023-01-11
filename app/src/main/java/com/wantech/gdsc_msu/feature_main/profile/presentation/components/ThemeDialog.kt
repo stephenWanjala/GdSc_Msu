@@ -28,7 +28,7 @@ fun ThemeDialog(
         onDismissRequest = { onDismiss() },
         shape = RoundedCornerShape(20.dp),
         title = {
-            Text(text = "Themes", style = MaterialTheme.typography.h2)
+            Text(text = "Themes", style = MaterialTheme.typography.h4, modifier = Modifier.padding(8.dp))
         },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -49,7 +49,7 @@ fun ThemeDialog(
                     themeName = "Dark Mode",
                     themeValue = Theme.NIGHT_THEME.themeValue,
                     icon = Icons.Default.ModeNight,
-                    onSelectTheme = onSelectTheme
+                    onSelectTheme = { onSelectTheme(Theme.NIGHT_THEME.themeValue) }
                 )
             }
         },
