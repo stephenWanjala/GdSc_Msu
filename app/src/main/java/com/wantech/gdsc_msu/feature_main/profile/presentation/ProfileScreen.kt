@@ -1,38 +1,44 @@
 package com.wantech.gdsc_msu.feature_main.profile.presentation
 
-import android.content.Intent
-import android.content.res.Configuration
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.*
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.wantech.gdsc_msu.AuthActivity
-import com.wantech.gdsc_msu.R
-import com.wantech.gdsc_msu.core.presentation.AButton
+import com.wantech.gdsc_msu.core.domain.model.User
+import com.wantech.gdsc_msu.core.presentation.theme.ProfilePictureSizeLarge
+import com.wantech.gdsc_msu.core.presentation.theme.SpaceSmall
+import com.wantech.gdsc_msu.core.util.toPx
 import com.wantech.gdsc_msu.feature_auth.login.presentation.LoginViewModel
 import com.wantech.gdsc_msu.feature_main.profile.domain.model.ProfileItemModel
-import com.wantech.gdsc_msu.feature_main.profile.domain.model.UserProfile
-import com.wantech.gdsc_msu.feature_main.profile.presentation.components.ProfileHeader
-import com.wantech.gdsc_msu.feature_main.profile.presentation.components.ProfileItem
-import com.wantech.gdsc_msu.feature_main.profile.presentation.components.ThemeDialog
+import com.wantech.gdsc_msu.feature_main.profile.presentation.components.ProfileHeaderSection
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun ProfileScreen(
     appVersionName: String, viewModel: LoginViewModel = hiltViewModel(),
+    profilePictureSize: Dp = ProfilePictureSizeLarge,
+    profileViewModel: ProfileViewModel = hiltViewModel()
 
 ) {
 
-   val profileViewModel: ProfileViewModel = hiltViewModel()
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
     var orientation = configuration.orientation
@@ -43,124 +49,130 @@ fun ProfileScreen(
         mutableStateOf(false)
     }
 
+
+    val iconHorizontalCenterLength =
+        (LocalConfiguration.current.screenWidthDp.dp.toPx() / 4f -
+                (profilePictureSize / 4f).toPx() -
+                SpaceSmall.toPx()) / 2f
+    val iconSizeExpanded = 35.dp
+    val toolbarHeightCollapsed = 75.dp
+    val imageCollapsedOffsetY = remember {
+        (toolbarHeightCollapsed - profilePictureSize / 2f) / 2f
+    }
+    val iconCollapsedOffsetY = remember {
+        (toolbarHeightCollapsed - iconSizeExpanded) / 2f
+    }
+    val bannerHeight = (LocalConfiguration.current.screenWidthDp / 2.5f).dp
+    val toolbarHeightExpanded = remember {
+        bannerHeight + profilePictureSize
+    }
+    val maxOffset = remember {
+        toolbarHeightExpanded - toolbarHeightCollapsed
+    }
+
+    val toolbarState = profileViewModel.toolbarState.value
+    val state = profileViewModel.state.value
+    val lazyListState = rememberLazyListState()
+
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                val delta = available.y
+                val shouldNotScroll = delta > 0f && lazyListState.firstVisibleItemIndex != 0
+                if (shouldNotScroll) {
+                    return Offset.Zero
+                }
+                val newOffset = profileViewModel.toolbarState.value.toolbarOffsetY + delta
+                profileViewModel.setToolbarOffsetY(
+                    newOffset.coerceIn(
+                        minimumValue = -maxOffset.toPx(),
+                        maximumValue = 0f
+                    )
+                )
+                profileViewModel.setExpandedRatio((profileViewModel.toolbarState.value.toolbarOffsetY + maxOffset.toPx()) / maxOffset.toPx())
+                return Offset.Zero
+            }
+        }
+    }
+    val profileItems = listOf(
+        ProfileItemModel(
+            icon = Icons.Default.VerifiedUser,
+            itemName = "profile Info"
+        ),
+        ProfileItemModel(
+            icon = Icons.Default.AdminPanelSettings,
+            itemName = "Admins"
+        ),
+        ProfileItemModel(
+            icon = Icons.Default.PostAdd,
+            itemName = "Post"
+        ),
+        ProfileItemModel(
+            icon = Icons.Default.Person,
+            itemName = "Google Leads"
+        ),
+        ProfileItemModel(
+            icon = Icons.Default.LightMode,
+            itemName = "Change Your Theme"
+        ),
+        ProfileItemModel(
+            icon = Icons.Default.Info,
+            itemName = "App Version $appVersionName"
+        )
+    )
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
         Scaffold(modifier = Modifier.fillMaxSize()) {
             val unUsedPadding = it.calculateTopPadding()
 
-            val profileItems = listOf(
-                ProfileItemModel(
-                    icon = Icons.Default.VerifiedUser,
-                    itemName = "profile Info"
-                ),
-                ProfileItemModel(
-                    icon = Icons.Default.AdminPanelSettings,
-                    itemName = "Admins"
-                ),
-                ProfileItemModel(
-                    icon = Icons.Default.PostAdd,
-                    itemName = "Post"
-                ),
-                ProfileItemModel(
-                    icon = Icons.Default.Person,
-                    itemName = "Google Leads"
-                ),
-                ProfileItemModel(
-                    icon = Icons.Default.DarkMode,
-                    itemName = "Change Your Theme"
-                ),
-                ProfileItemModel(
-                    icon = Icons.Default.Info,
-                    itemName = "App Version $appVersionName"
-                )
-            )
-            Column(modifier = Modifier.fillMaxSize()) {
-
-
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .nestedScroll(nestedScrollConnection)
+            ) {
                 LazyColumn(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 64.dp),
-                    horizontalAlignment = if (orientation == Configuration.ORIENTATION_LANDSCAPE) Alignment.CenterHorizontally else Alignment.Start,
-                    verticalArrangement = Arrangement.Center
+                        .fillMaxSize(),
+                    state = lazyListState
                 ) {
                     item {
-                        ProfileHeader(
-                            userProfile = UserProfile(email = viewModel.getUserEmail())
+                        Spacer(
+                            modifier = Modifier.height(
+                                toolbarHeightExpanded - profilePictureSize / 2f
+                            )
                         )
                     }
                     item {
-                        Text(
-                            text = stringResource(R.string.gdsc_maseno),
-                            modifier = Modifier.padding(16.dp)
-                        )
-                    }
-                    item {
-                        Divider()
-                        ProfileItem(profileItemModel = profileItems[0], onclickProfileItem = {})
-                    }
+                        if(state.profile!=null){
+                            val profile =state.profile
+                            ProfileHeaderSection(
+                                user = User(
+                                    userId = profile.userId,
+                                    profilePictureUrl = profile.profilePictureUrl,
+                                    username = profile.username,
+                                    description = profile.bio,
 
-                    item {
-                        Divider()
-                        ProfileItem(profileItemModel = profileItems[0], onclickProfileItem = {})
-                    }
-                    item {
-                        Divider()
-                        ProfileItem(profileItemModel = profileItems[1], onclickProfileItem = {})
-                    }
-                    item {
-                        Divider()
-                        ProfileItem(profileItemModel = profileItems[2], onclickProfileItem = {})
-                    }
-                    item {
-                        Divider()
-                        ProfileItem(profileItemModel = profileItems[3], onclickProfileItem = {})
-                    }
-                    item {
-                        Divider()
-                        ProfileItem(profileItemModel = profileItems[4], onclickProfileItem = {
-                            shouldShowThemeDialog = !shouldShowThemeDialog
-                        })
-                    }
-                    item {
-                        Divider()
-                        ProfileItem(profileItemModel = profileItems[5], onclickProfileItem = {})
-                    }
+                                    )
+                            )
+                        } else{
+                            ProfileHeaderSection(
+                                user = User(
+                                    userId = "userId",
+                                    profilePictureUrl = "https://thumbs.dreamstime.com/b/blockchain-line-icon-vector-simple-minimal-pictogram-web-graphics-apps-110060602.jpg",
+                                    username = "username",
+                                    description = "description,this is a description,kajjxjxxszxsx \n shjdhsjhds xhjsx",
 
-
-
-
-                    item {
-                        Spacer(modifier = Modifier.height(8.dp))
-                        AButton(
-                            text = stringResource(R.string.logout),
-                            onClick = {
-                                viewModel.signOut()
-                                context.startActivity(
-                                    Intent(
-                                        context,
-                                        AuthActivity::class.java
-                                    ).also { intent ->
-                                        intent.flags =
-                                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                    })
-                            },
-                            modifier = if (orientation == Configuration.ORIENTATION_PORTRAIT) Modifier else Modifier.fillMaxWidth(
-                                0.5f
-                            ),
-                            buttonEnabled = { true },
-                            trailingIcon = Icons.Default.Logout
-                        )
-
-                        Spacer(modifier = Modifier.height(16.dp))
+                                    )
+                            )
+                        }
                     }
-                }
-                if (shouldShowThemeDialog) {
-                    ThemeDialog(
-                        onDismiss = { shouldShowThemeDialog = !shouldShowThemeDialog },
-                        onSelectTheme = profileViewModel::updateTheme
-                    )
+                      /*  if (shouldShowThemeDialog) {
+                            ThemeDialog(
+                                onDismiss = { shouldShowThemeDialog = !shouldShowThemeDialog },
+                                onSelectTheme = profileViewModel::updateTheme
+                            )
+                        }  */
+                    }
                 }
             }
         }
     }
-}

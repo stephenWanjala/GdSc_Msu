@@ -17,4 +17,7 @@
     <string name="gdsc_maseno">GDSC Maseno</string>
     <string name="logout">Logout</string>
     <string name="ok">Ok</string>
+    <string name="banner_image">bannerImage</string>
+    <string name="message">Message</string>
+    <string name="edit">edit</string>
 </resources>

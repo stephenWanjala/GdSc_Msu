@@ -7,6 +7,8 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.wantech.gdsc_msu.core.data.GdScPreferences
 import com.wantech.gdsc_msu.core.data.GdScPreferences.Companion.GDSC_PREFERENCES
@@ -35,7 +37,10 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAuthRepository(firebaseAuth: FirebaseAuth): AuthRepository =
+    fun provideAuthRepository(
+        firebaseAuth: FirebaseAuth,
+        firestore: FirebaseFirestore
+    ): AuthRepository =
         AuthRepositoryImpl(
             firebaseAuth = firebaseAuth
         )
@@ -43,8 +48,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideSignUpUseCase(authRepository: AuthRepository): SignUpUseCase =
-        SignUpUseCase(authRepository)
+    fun provideSignUpUseCase(authRepository: AuthRepository,firestore: FirebaseFirestore): SignUpUseCase =
+        SignUpUseCase(authRepository,firestore)
 
     @Provides
     @Singleton
@@ -71,4 +76,7 @@ object AppModule {
     fun provideUserDataRepository(gdScPreferences: GdScPreferences): UserDataRepository =
         UserDataRepositoryImpl(gdScPreferences)
 
+    @Provides
+    @Singleton
+    fun provideFireStoreInstance(): FirebaseFirestore = Firebase.firestore
 }

@@ -1,9 +1,7 @@
 package com.wantech.gdsc_msu.feature_main.profile.presentation.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.MaterialTheme
@@ -28,10 +26,14 @@ fun ThemeDialog(
         onDismissRequest = { onDismiss() },
         shape = RoundedCornerShape(20.dp),
         title = {
-            Text(text = "Themes", style = MaterialTheme.typography.h4, modifier = Modifier.padding(8.dp))
+            Text(text = "Themes", style = MaterialTheme.typography.h5)
+
         },
         text = {
-            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                Spacer(modifier = Modifier.height(8.dp))
                 ThemeItem(
                     themeName = "Use System Settings",
                     themeValue = Theme.FOLLOW_SYSTEM.themeValue,
@@ -49,7 +51,7 @@ fun ThemeDialog(
                     themeName = "Dark Mode",
                     themeValue = Theme.NIGHT_THEME.themeValue,
                     icon = Icons.Default.ModeNight,
-                    onSelectTheme = { onSelectTheme(Theme.NIGHT_THEME.themeValue) }
+                    onSelectTheme = onSelectTheme
                 )
             }
         },
@@ -58,7 +60,7 @@ fun ThemeDialog(
                 style = MaterialTheme.typography.button,
                 color = MaterialTheme.colors.primary,
                 modifier = Modifier
-                    .padding(horizontal = 8.dp)
+                    .padding(horizontal = 8.dp, vertical = 4.dp)
                     .clickable { onDismiss() })
         }
     )
