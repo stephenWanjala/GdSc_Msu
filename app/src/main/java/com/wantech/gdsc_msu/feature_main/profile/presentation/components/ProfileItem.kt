@@ -23,7 +23,7 @@ fun ProfileItem(
 ) {
     Row(
         modifier = modifier
-//            .fillMaxWidth()
+            .fillMaxWidth()
             .padding(16.dp)
             .clickable {
                 onclickProfileItem(profileItemModel)
@@ -43,11 +43,11 @@ fun ProfileItem(
             )
         }
 
-//        Icon(
-//            imageVector = Icons.Default.ArrowForwardIos, contentDescription = null,
-////            tint = MaterialTheme.colors.secondary,
-//            modifier = Modifier.size(10.dp)
-//        )
+        Icon(
+            imageVector = Icons.Default.ArrowForwardIos, contentDescription = null,
+//            tint = MaterialTheme.colors.secondary,
+            modifier = Modifier.size(10.dp)
+        )
     }
 }
 

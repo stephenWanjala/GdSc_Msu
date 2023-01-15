@@ -2,7 +2,7 @@ package com.wantech.gdsc_msu.feature_auth.sign_up.domain.usecase
 
 import com.google.firebase.auth.AuthResult
 import com.wantech.gdsc_msu.core.data.repository.AuthRepository
-import com.wantech.gdsc_msu.core.util.Resource
+import com.wantech.gdsc_msu.util.Resource
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

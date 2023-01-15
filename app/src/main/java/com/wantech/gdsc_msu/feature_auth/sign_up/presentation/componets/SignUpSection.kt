@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.wantech.gdsc_msu.R
 import com.wantech.gdsc_msu.core.presentation.LoadingDialog
-import com.wantech.gdsc_msu.core.presentation.AButton
+import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.AButton
 import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.InputTextField
 import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.LogoSection
 import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.PasswordTextField
@@ -32,8 +32,8 @@ import com.wantech.gdsc_msu.feature_auth.sign_up.presentation.SignUpViewModel
 import com.wantech.gdsc_msu.feature_auth.sign_up.presentation.SignupEvent
 import com.wantech.gdsc_msu.ui.theme.SurfaceVariantDark
 import com.wantech.gdsc_msu.ui.theme.SurfaceVariantLight
-import com.wantech.gdsc_msu.core.util.Screen
-import com.wantech.gdsc_msu.core.util.asString
+import com.wantech.gdsc_msu.util.Screen
+import com.wantech.gdsc_msu.util.asString
 import kotlinx.coroutines.launch
 
 

@@ -1,4 +1,4 @@
-package com.wantech.gdsc_msu.core.util
+package com.wantech.gdsc_msu.util
 
 typealias SimpleResource = Resource<Unit>
 

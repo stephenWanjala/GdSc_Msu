@@ -1,4 +1,4 @@
-package com.wantech.gdsc_msu.core.util
+package com.wantech.gdsc_msu.util
 
 import androidx.annotation.StringRes
 import com.wantech.gdsc_msu.R
@@ -9,7 +9,7 @@ sealed class UiText {
 
     companion object {
         fun unknownError(): UiText {
-            return StringResource(R.string.error_unknown)
+            return UiText.StringResource(R.string.error_unknown)
         }
     }
 }

@@ -6,7 +6,7 @@ import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.School
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.wantech.gdsc_msu.core.util.Screen
+import com.wantech.gdsc_msu.util.Screen
 
 sealed class BottomNavItem(
     val icon: ImageVector,

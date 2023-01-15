@@ -1,5 +1,6 @@
 package com.wantech.gdsc_msu.feature_main.presentation
 
+import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager.NameNotFoundException
 import android.content.pm.PackageManager.PackageInfoFlags
@@ -22,31 +23,34 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.wantech.gdsc_msu.core.util.Screen
+import com.wantech.gdsc_msu.AuthActivity
 import com.wantech.gdsc_msu.feature_auth.login.presentation.LoginViewModel
 import com.wantech.gdsc_msu.ui.theme.GdSc_MsuTheme
-import com.wantech.gdsc_msu.ui.theme.Theme
 import com.wantech.gdsc_msu.util.MainHomeScreenNavHost
+import com.wantech.gdsc_msu.util.Screen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class HomeActivity : ComponentActivity() {
+class MainHomeScreen : ComponentActivity() {
     private lateinit var packageInfo: PackageInfo
     private lateinit var appVersionName: String
 
+
     private val viewModel: LoginViewModel by viewModels()
-    private val mVieModel: MainVieModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val themeValue = mVieModel.theme.collectAsState(
-                initial = Theme.FOLLOW_SYSTEM.themeValue,
-                context = Dispatchers.Main.immediate
-            )
             try {
 
                 packageInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -68,7 +72,7 @@ class HomeActivity : ComponentActivity() {
 
 
 
-            GdSc_MsuTheme(theme = themeValue.value) {
+            GdSc_MsuTheme {
 
 
                 val navController = rememberNavController()

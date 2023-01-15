@@ -27,7 +27,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity android:name=".feature_main.presentation.HomeActivity"
+        <activity android:name=".feature_main.presentation.MainHomeScreen"
             android:exported="false"
             android:theme="@style/Theme.GdSc_Msu"/>
     </application>
