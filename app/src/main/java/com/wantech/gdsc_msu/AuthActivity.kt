@@ -11,9 +11,8 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
+import com.wantech.gdsc_msu.core.presentation.MainVieModel
 import com.wantech.gdsc_msu.feature_main.presentation.HomeActivity
-import com.wantech.gdsc_msu.feature_main.presentation.MainVieModel
-import com.wantech.gdsc_msu.feature_main.profile.presentation.ProfileViewModel
 import com.wantech.gdsc_msu.ui.theme.GdSc_MsuTheme
 import com.wantech.gdsc_msu.ui.theme.Theme
 import com.wantech.gdsc_msu.util.AuthNavHost
@@ -23,7 +22,7 @@ import kotlinx.coroutines.Dispatchers
 @AndroidEntryPoint
 class AuthActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        val viewModel:MainVieModel by viewModels()
+        val viewModel: MainVieModel by viewModels()
         super.onCreate(savedInstanceState)
         setContent {
             val themeValue = viewModel.theme.collectAsState(
