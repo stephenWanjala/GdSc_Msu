@@ -4,7 +4,7 @@ import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.wantech.gdsc_msu.core.data.repository.AuthRepository
-import com.wantech.gdsc_msu.util.Resource
+import com.wantech.gdsc_msu.core.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*

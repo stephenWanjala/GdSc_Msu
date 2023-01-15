@@ -1,7 +1,7 @@
 package com.wantech.gdsc_msu.feature_auth.sign_up.presentation
 
 import com.google.firebase.auth.AuthResult
-import com.wantech.gdsc_msu.util.UiText
+import com.wantech.gdsc_msu.core.util.UiText
 
 data class SignUpUIState(
     val userName: String = "",

@@ -1,7 +1,7 @@
 package com.wantech.gdsc_msu.core.data.repository
 
 import com.google.firebase.auth.AuthResult
-import com.wantech.gdsc_msu.util.Resource
+import com.wantech.gdsc_msu.core.util.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {

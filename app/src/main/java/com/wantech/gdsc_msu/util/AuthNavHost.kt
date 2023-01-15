@@ -2,15 +2,14 @@ package com.wantech.gdsc_msu.util
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
-import androidx.navigation.activity
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.wantech.gdsc_msu.core.util.Screen
 import com.wantech.gdsc_msu.feature_auth.login.presentation.componets.LoginScreen
-import com.wantech.gdsc_msu.feature_auth.sign_up.presentation.componets.SignUpScreen
-import com.wantech.gdsc_msu.feature_main.presentation.MainHomeScreen
+import com.wantech.gdsc_msu.feature_auth.sign_up.presentation.SignUpScreen
 
 @Composable
-fun NavigationHost(navHostController: NavHostController, onNavigate: () -> Unit) {
+fun AuthNavHost(navHostController: NavHostController, onNavigate: () -> Unit) {
     NavHost(
         navController = navHostController,
         startDestination = Screen.LoginAccountScreen.route,
@@ -49,9 +48,6 @@ fun NavigationHost(navHostController: NavHostController, onNavigate: () -> Unit)
             )
 
         }
-//        activity(route = "mainHome") {
-//            this.activityClass = MainHomeScreen::class
-//        }
     }
 
 }
