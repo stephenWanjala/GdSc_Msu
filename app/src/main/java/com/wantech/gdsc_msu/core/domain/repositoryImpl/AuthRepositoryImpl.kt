@@ -3,8 +3,8 @@ package com.wantech.gdsc_msu.core.domain.repositoryImpl
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.wantech.gdsc_msu.core.data.repository.AuthRepository
-import com.wantech.gdsc_msu.core.util.Resource
-import com.wantech.gdsc_msu.core.util.UiText
+import com.wantech.gdsc_msu.util.Resource
+import com.wantech.gdsc_msu.util.UiText
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow

@@ -1,7 +1,6 @@
 package com.wantech.gdsc_msu.ui.theme
 
 import android.app.Activity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
@@ -17,16 +16,16 @@ private val DarkColorPalette = darkColors(
     primary = PrimaryDark,
     primaryVariant = TertiaryDark,
     secondary = SecondaryDark,
-    surface = SurfaceDark,
+    surface = SurfaceDark ,
     background = SurfaceDark,
 
-    )
+)
 
 private val LightColorPalette = lightColors(
     primary = PrimaryLight,
     primaryVariant = TertiaryLight,
     secondary = SecondaryLight,
-    background = SurfaceLight,
+    background = SurfaceLight ,
     surface = SurfaceLight,
     onBackground = Color(0xFF1C1B1F),
     onSurface = Color(0xFF1C1B1F),
@@ -42,18 +41,11 @@ private val LightColorPalette = lightColors(
 )
 
 @Composable
-fun GdSc_MsuTheme(
-    theme: Int,
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit,
-) {
-    val autoColors = if (isSystemInDarkTheme()) DarkColorPalette else LightColorPalette
-
-
-    val colors = when (theme) {
-        Theme.LIGHT_THEME.themeValue -> LightColorPalette
-        Theme.NIGHT_THEME.themeValue -> DarkColorPalette
-        else -> autoColors
+fun GdSc_MsuTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+    val colors = if (darkTheme) {
+        DarkColorPalette
+    } else {
+        LightColorPalette
     }
     val view = LocalView.current
     if (!view.isInEditMode) {
@@ -69,11 +61,4 @@ fun GdSc_MsuTheme(
         shapes = Shapes,
         content = content
     )
-}
-
-
-enum class Theme(val themeValue: Int) {
-    FOLLOW_SYSTEM(themeValue = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM),
-    LIGHT_THEME(themeValue = AppCompatDelegate.MODE_NIGHT_NO),
-    NIGHT_THEME(themeValue = AppCompatDelegate.MODE_NIGHT_YES);
 }

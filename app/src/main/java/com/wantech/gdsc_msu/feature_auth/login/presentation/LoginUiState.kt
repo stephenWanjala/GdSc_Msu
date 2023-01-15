@@ -1,7 +1,7 @@
 package com.wantech.gdsc_msu.feature_auth.login.presentation
 
 import com.google.firebase.auth.AuthResult
-import com.wantech.gdsc_msu.core.util.UiText
+import com.wantech.gdsc_msu.util.UiText
 
 data class LoginUiState(
     val email: String = "",

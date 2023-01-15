@@ -1,4 +1,4 @@
-package com.wantech.gdsc_msu.core.util
+package com.wantech.gdsc_msu.util
 
 import android.content.Context
 import androidx.compose.runtime.Composable
