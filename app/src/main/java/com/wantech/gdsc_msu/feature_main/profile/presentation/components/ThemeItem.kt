@@ -1,5 +1,6 @@
 package com.wantech.gdsc_msu.feature_main.profile.presentation.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,12 +19,16 @@ fun ThemeItem(
     themeName: String, themeValue: Int, icon: ImageVector, onSelectTheme: (Int) -> Unit
 ) {
     Card(
-        shape = RoundedCornerShape(20.dp), onClick = {
+        shape = RoundedCornerShape(20.dp),
+        onClick = {
             onSelectTheme(themeValue)
-        }) {
+        },
+//        backgroundColor = MaterialTheme.colors.secondary
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .background(color = MaterialTheme.colors.surface)
                 .padding(12.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically

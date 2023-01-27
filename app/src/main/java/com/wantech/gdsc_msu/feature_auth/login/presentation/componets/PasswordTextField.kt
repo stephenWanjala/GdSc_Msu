@@ -32,7 +32,7 @@ fun PasswordTextField(
     onValueChange: (String) -> Unit,
     keyboardOptions: KeyboardOptions = KeyboardOptions(
         imeAction = ImeAction.Next,
-        keyboardType = KeyboardType.Email,
+        keyboardType = KeyboardType.Password,
 
         ),
     passwordModifier: Modifier = Modifier,

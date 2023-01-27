@@ -30,9 +30,9 @@ import kotlinx.coroutines.flow.collectLatest
 fun ProfileScreen(
     appVersionName: String, viewModel: LoginViewModel = hiltViewModel(),
 
-) {
+    ) {
 
-   val profileViewModel: ProfileViewModel = hiltViewModel()
+    val profileViewModel: ProfileViewModel = hiltViewModel()
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
     var orientation = configuration.orientation
@@ -101,15 +101,19 @@ fun ProfileScreen(
 
                     item {
                         Divider()
-                        ProfileItem(profileItemModel = profileItems[0], onclickProfileItem = {})
+                        ProfileItem(
+                            profileItemModel = profileItems[1],
+                            onclickProfileItem = {},
+                            adminPost = true
+                        )
                     }
                     item {
                         Divider()
-                        ProfileItem(profileItemModel = profileItems[1], onclickProfileItem = {})
-                    }
-                    item {
-                        Divider()
-                        ProfileItem(profileItemModel = profileItems[2], onclickProfileItem = {})
+                        ProfileItem(
+                            profileItemModel = profileItems[2],
+                            onclickProfileItem = {},
+                            adminPost = true
+                        )
                     }
                     item {
                         Divider()
