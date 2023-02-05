@@ -53,8 +53,21 @@ fun NewsUpdatesScreen(
                 modifier = Modifier.weight(1f),
                 state = pagerState,
                 count = tabData.size,
-            ) {
-                // TODO: page content
+            ) { page ->
+                when (page) {
+                    0 -> {
+                        GroupNewsScreen(
+                            news = listOf(),
+                            onClick = {
+
+                            },
+                            onclickNewsImage = {}
+                        )
+                    }
+                    1 -> {
+//                        NewsScreen()
+                    }
+                }
             }
 
         }

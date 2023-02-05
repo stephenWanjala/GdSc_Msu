@@ -44,8 +44,8 @@ fun ProfileScreen(
     }
 
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
-        Scaffold(modifier = Modifier.fillMaxSize()) {
-            val unUsedPadding = it.calculateTopPadding()
+        Scaffold(modifier = Modifier.fillMaxSize()) { paddingValues ->
+
 
             val profileItems = listOf(
                 ProfileItemModel(
@@ -73,7 +73,7 @@ fun ProfileScreen(
                     itemName = "App Version $appVersionName"
                 )
             )
-            Column(modifier = Modifier.fillMaxSize()) {
+            Column(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
 
 
                 LazyColumn(

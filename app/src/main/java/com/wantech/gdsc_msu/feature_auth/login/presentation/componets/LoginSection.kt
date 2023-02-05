@@ -50,12 +50,12 @@ fun LoginSection(
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
         }
-    ) {
-        val unUsedPadding = it.calculateTopPadding()
+    ) { paddingValues ->
+
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(paddingValues),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
