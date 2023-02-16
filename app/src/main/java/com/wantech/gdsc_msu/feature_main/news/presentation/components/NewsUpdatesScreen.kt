@@ -7,29 +7,30 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.pagerTabIndicatorOffset
-import com.google.accompanist.pager.rememberPagerState
+import com.google.accompanist.pager.*
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun NewsUpdatesScreen(
-    tabData: List<String> = listOf("Groups", "News")
+    tabData: List<String> = listOf("Groups", "News"),
+    pagerState: PagerState
 ) {
     Scaffold(modifier = Modifier.fillMaxSize()) { paddingValues ->
 
         val scope = rememberCoroutineScope()
-        val pagerState = rememberPagerState()
+        var selectedTabIndex by remember {
+            mutableStateOf(0)
+        }
+        LaunchedEffect(pagerState.currentPage) {
+            selectedTabIndex = pagerState.currentPage
+        }
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(paddingValues)
         ) {
-            var tabIndex by remember {
-                mutableStateOf(0)
-            }
+
             TabRow(selectedTabIndex = pagerState.currentPage, indicator = { tabPositions ->
                 TabRowDefaults.Indicator(
                     Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
@@ -38,15 +39,19 @@ fun NewsUpdatesScreen(
             }) {
                 tabData.forEachIndexed { index, tab ->
                     Tab(
-                        text = { Text(text = tab) },
-                        selected = tabIndex == index,
+                        selectedContentColor = MaterialTheme.colors.primary,
+                        unselectedContentColor = MaterialTheme.colors.onBackground,
+                        selected = selectedTabIndex == index,
                         onClick = {
-                            tabIndex = index
+                            selectedTabIndex = index
                             scope.launch {
-                                pagerState.animateScrollToPage(index)
+                                pagerState.animateScrollToPage(selectedTabIndex)
+
+
                             }
-                        }
-                    )
+                        }) {
+                        Text(text = tab)
+                    }
                 }
             }
             HorizontalPager(
