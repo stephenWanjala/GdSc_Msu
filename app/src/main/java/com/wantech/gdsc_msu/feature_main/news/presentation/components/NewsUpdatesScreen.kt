@@ -5,8 +5,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
+import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
@@ -22,28 +24,38 @@ fun NewsUpdatesScreen(
 
         val scope = rememberCoroutineScope()
         val pagerState = rememberPagerState()
+        var selectedTabIndex by remember { mutableStateOf(0) }
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(paddingValues)
         ) {
-            var tabIndex by remember {
-                mutableStateOf(0)
+
+
+            LaunchedEffect(pagerState.currentPage) {
+                selectedTabIndex = pagerState.currentPage
             }
-            TabRow(selectedTabIndex = pagerState.currentPage, indicator = { tabPositions ->
+            TabRow(selectedTabIndex = selectedTabIndex, indicator = { tabPositions ->
                 TabRowDefaults.Indicator(
-                    Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
+//                    Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
+                    modifier = Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
                     height = TabRowDefaults.IndicatorHeight * 1.5F
                 )
             }) {
                 tabData.forEachIndexed { index, tab ->
                     Tab(
-                        text = { Text(text = tab) },
-                        selected = tabIndex == index,
+                        text = {
+                            Text(
+                                text = tab, style = MaterialTheme.typography.body2.copy(
+                                    color = if (selectedTabIndex == index) MaterialTheme.colors.primary else Color.Unspecified
+                                )
+                            )
+                        },
+                        selected = selectedTabIndex == index,
                         onClick = {
-                            tabIndex = index
+
                             scope.launch {
-                                pagerState.animateScrollToPage(index)
+                                pagerState.scrollToPage(index)
                             }
                         }
                     )
