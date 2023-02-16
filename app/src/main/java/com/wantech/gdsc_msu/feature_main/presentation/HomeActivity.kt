@@ -26,7 +26,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.wantech.gdsc_msu.core.presentation.MainVieModel
 import com.wantech.gdsc_msu.core.util.Screen
-import com.wantech.gdsc_msu.feature_auth.login.presentation.LoginViewModel
 import com.wantech.gdsc_msu.ui.theme.GdSc_MsuTheme
 import com.wantech.gdsc_msu.ui.theme.Theme
 import com.wantech.gdsc_msu.util.MainHomeScreenNavHost
@@ -34,12 +33,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 
 
+@Suppress("DEPRECATION", "UNUSED_VARIABLE")
 @AndroidEntryPoint
 class HomeActivity : ComponentActivity() {
     private lateinit var packageInfo: PackageInfo
     private lateinit var appVersionName: String
 
-    private val viewModel: LoginViewModel by viewModels()
     private val mVieModel: MainVieModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

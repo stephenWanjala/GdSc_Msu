@@ -21,6 +21,9 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
 
+    override val currentUserId: String?
+        get() =firebaseAuth.currentUser?.uid
+
     override suspend fun signUpWithEmailAndPassword(
         email: String,
         password: String

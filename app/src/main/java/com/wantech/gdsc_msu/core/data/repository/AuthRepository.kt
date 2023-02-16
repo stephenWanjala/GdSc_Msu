@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
     suspend fun getUserId(): Flow<String>
+    val currentUserId:String?
 
     suspend fun signUpWithEmailAndPassword(
         email: String,

@@ -7,7 +7,9 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import com.wantech.gdsc_msu.core.data.GdScPreferences
 import com.wantech.gdsc_msu.core.data.GdScPreferences.Companion.GDSC_PREFERENCES
 import com.wantech.gdsc_msu.core.data.repository.AuthRepository
@@ -16,6 +18,8 @@ import com.wantech.gdsc_msu.core.domain.repositoryImpl.AuthRepositoryImpl
 import com.wantech.gdsc_msu.core.domain.repositoryImpl.UserDataRepositoryImpl
 import com.wantech.gdsc_msu.feature_auth.login.domain.usecase.LoginUseCase
 import com.wantech.gdsc_msu.feature_auth.sign_up.domain.usecase.SignUpUseCase
+import com.wantech.gdsc_msu.feature_main.profile.data.repository.ProfileRepository
+import com.wantech.gdsc_msu.feature_main.profile.domain.repositoryImpl.ProfileRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -70,5 +74,27 @@ object AppModule {
     @Singleton
     fun provideUserDataRepository(gdScPreferences: GdScPreferences): UserDataRepository =
         UserDataRepositoryImpl(gdScPreferences)
+
+    @Provides
+    @Singleton
+    fun provideProfileRepository(
+        firestore: FirebaseFirestore,
+        storage: FirebaseStorage,
+        authRepository: AuthRepository
+    ): ProfileRepository = ProfileRepositoryImpl(
+        fireStore = firestore,
+        storage = storage,
+        authRepository = authRepository
+    )
+
+
+    @Provides
+    @Singleton
+    fun provideFirebaseFirestore(): FirebaseFirestore = FirebaseFirestore.getInstance()
+
+    @Provides
+    @Singleton
+    fun provideFirebaseStorage(): FirebaseStorage = FirebaseStorage.getInstance()
+
 
 }
