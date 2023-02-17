@@ -73,8 +73,9 @@ fun ProfileScreen(
                     itemName = "App Version $appVersionName"
                 )
             )
-            Column(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
-
+            Column(modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)) {
 
                 LazyColumn(
                     modifier = Modifier
@@ -85,7 +86,8 @@ fun ProfileScreen(
                 ) {
                     item {
                         ProfileHeader(
-                            userProfile = UserProfile(email = viewModel.getUserEmail())
+                            userProfile = UserProfile(email = viewModel.getUserEmail()),
+                            profileVewModel = profileViewModel
                         )
                     }
                     item {

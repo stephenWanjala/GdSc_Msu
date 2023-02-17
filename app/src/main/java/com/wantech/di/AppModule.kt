@@ -18,8 +18,6 @@ import com.wantech.gdsc_msu.core.domain.repositoryImpl.AuthRepositoryImpl
 import com.wantech.gdsc_msu.core.domain.repositoryImpl.UserDataRepositoryImpl
 import com.wantech.gdsc_msu.feature_auth.login.domain.usecase.LoginUseCase
 import com.wantech.gdsc_msu.feature_auth.sign_up.domain.usecase.SignUpUseCase
-import com.wantech.gdsc_msu.feature_main.profile.data.repository.ProfileRepository
-import com.wantech.gdsc_msu.feature_main.profile.domain.repositoryImpl.ProfileRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -75,17 +73,7 @@ object AppModule {
     fun provideUserDataRepository(gdScPreferences: GdScPreferences): UserDataRepository =
         UserDataRepositoryImpl(gdScPreferences)
 
-    @Provides
-    @Singleton
-    fun provideProfileRepository(
-        firestore: FirebaseFirestore,
-        storage: FirebaseStorage,
-        authRepository: AuthRepository
-    ): ProfileRepository = ProfileRepositoryImpl(
-        fireStore = firestore,
-        storage = storage,
-        authRepository = authRepository
-    )
+
 
 
     @Provides

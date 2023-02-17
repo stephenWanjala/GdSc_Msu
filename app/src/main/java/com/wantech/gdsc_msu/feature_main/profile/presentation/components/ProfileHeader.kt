@@ -13,34 +13,39 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Person
+import androidx.compose.material.icons.filled.Person3
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.wantech.gdsc_msu.R
 import com.wantech.gdsc_msu.feature_main.profile.domain.model.UserProfile
+import com.wantech.gdsc_msu.feature_main.profile.presentation.ProfileViewModel
 
 @Composable
 fun ProfileHeader(
     userProfile: UserProfile,
     modifier: Modifier = Modifier,
-
+    profileVewModel: ProfileViewModel
 ) {
-    var selectedImageUri: Uri? by remember {
-        mutableStateOf(null)
-    }
+    var selectedImageUri by remember { mutableStateOf(Uri.EMPTY) }
+
+    val imageUri by profileVewModel.getImageUrl().collectAsState(initial =Uri.EMPTY)
+
+   LaunchedEffect(key1 = imageUri) {
+            selectedImageUri = imageUri
+        }
     val photoPicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri ->
-            selectedImageUri = uri
+            if (uri != null) {
+                profileVewModel.saveImage(uri)
+            }
         }
     )
     Row(
@@ -54,12 +59,6 @@ fun ProfileHeader(
 
         IconButton(
             onClick = {
-                /*
-                *TODO
-                * getImageFrom device
-                * Upload to db
-                * update profile
-                 */
                 photoPicker.launch(
                     PickVisualMediaRequest(
                         mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly
@@ -72,10 +71,11 @@ fun ProfileHeader(
                     color = MaterialTheme.colors.background.copy(alpha = 0.4f)
                 )
         ) {
-            if (selectedImageUri == null) {
+            if (selectedImageUri == Uri.EMPTY) {
                 Icon(
-                    imageVector = Icons.Rounded.Person, contentDescription = null,
+                    imageVector = Icons.Default.Person3, contentDescription = null,
                     modifier = Modifier
+                        .size(50.dp)
                         .clip(CircleShape)
                         .border(
                             shape = CircleShape,
@@ -84,10 +84,6 @@ fun ProfileHeader(
                         )
                 )
             }
-            /*
-            *
-            * decode image url to bitmap
-             */
             AsyncImage(
                 model = selectedImageUri, contentDescription = userProfile.userName,
                 modifier = Modifier
@@ -98,7 +94,6 @@ fun ProfileHeader(
                         color = MaterialTheme.colors.primary,
                         width = 1.dp
                     ),
-                placeholder = painterResource(id = R.drawable.ic_image),
                 contentScale = ContentScale.Crop
             )
 
@@ -118,20 +113,6 @@ fun ProfileHeader(
             )
 
         }
-//        var checked by remember {
-//            mutableStateOf(false)
-//        }
-//
-//        /*
-//        *
-//        * Theme switcher
-//         */
-//        Switch(
-//            checked = checked,
-//            onCheckedChange = { checked =!checked },
-//            modifier = Modifier,
-//
-//            )
 
     }
 }
